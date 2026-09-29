@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>SmartRent & PG Match — Interactive Prototype</title>
+  <script src="https://www.gstatic.com/antigravity/web/dev/tailwindcss.min.js"></script>
+  <style>
+    /* Custom scrollbar and animations */
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 9999px; }
+    .tab-btn.active {
+      background-color: #4f46e5;
+      color: white;
+    }
+    
+    /* Force crisp white high-contrast inputs so dark mode never renders black background */
+    input, select, textarea {
+      background-color: #ffffff !important;
+      color: #0f172a !important;
+      border: 1.5px solid #cbd5e1 !important;
+      color-scheme: light !important;
+    }
+    input[type="number"], input[type="text"], input[type="tel"] {
+      background-color: #ffffff !important;
+      color: #0f172a !important;
+      font-weight: 700 !important;
+    }
+    input:focus, select:focus, textarea:focus {
+      background-color: #ffffff !important;
+      color: #0f172a !important;
+      border-color: #4f46e5 !important;
+      outline: none !important;
+      box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.2) !important;
+    }
+  </style>
+</head>
+<body class="bg-slate-50 text-slate-900 antialiased p-2 sm:p-4">
+
+  <div id="app" class="max-w-4xl mx-auto bg-white rounded-3xl border border-slate-200 shadow-xl overflow-hidden min-h-[640px] flex flex-col justify-between">
+    
+    <!-- TOP NAVIGATION BAR (Visible once logged in) -->
+    <header id="navHeader" class="hidden border-b border-slate-100 bg-white sticky top-0 z-30 px-4 sm:px-6 py-3 flex items-center justify-between">
+      <div class="flex items-center gap-2">
+        <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-indigo-600 to-violet-600 flex items-center justify-center text-white font-bold shadow-md shadow-indigo-100">
+          🏢
+        </div>
+        <div>
+          <span class="text-base font-black text-indigo-700">SmartRent</span>
+          <span class="text-[10px] font-bold px-2 py-0.5 ml-1 rounded-full bg-indigo-50 text-indigo-700 border border-indigo-200">& PG Match</span>
+        </div>
+      </div>
+
+      <nav class="flex items-center gap-1 bg-slate-100 p-1 rounded-xl text-xs font-bold">
+        <button id="tabRoomsBtn" onclick="switchTab('rooms')" class="tab-btn active px-3 py-1.5 rounded-lg transition-all">
+          🏠 Search Rooms/PG
+        </button>
+        <button id="tabSharedBtn" onclick="switchTab('shared')" class="tab-btn px-3 py-1.5 rounded-lg text-slate-600 hover:text-slate-900 transition-all">
+          👥 Shared PG (Existing Flatmate)
+        </button>
+        <button id="tabSplitterBtn" onclick="switchTab('splitter')" class="tab-btn px-3 py-1.5 rounded-lg text-slate-600 hover:text-slate-900 transition-all">
+          🧮 Rent Splitter
+        </button>
+      </nav>
+
+      <div class="flex items-center gap-2">
+        <div class="text-right hidden sm:block">
+          <p id="navUserName" class="text-xs font-bold text-slate-800 leading-tight">Rahul Sharma</p>
+          <p id="navUserPhone" class="text-[10px] text-slate-500">+91 98765 43210</p>
+        </div>
+        <button onclick="handleLogout()" title="Logout / Test Login Again" class="p-2 rounded-xl text-slate-500 hover:text-rose-600 hover:bg-rose-50 transition-colors text-xs font-bold border border-slate-200">
+          🚪 Logout
+        </button>
+      </div>
+    </header>
+
+
+    <!-- VIEW 1: AUTHENTICATION FLOW (Default Initial Screen) -->
+    <div id="authSection" class="p-6 sm:p-12 flex items-center justify-center flex-1 bg-gradient-to-br from-indigo-50/50 via-white to-slate-50">
+      
+      <!-- SUB-STEP 1: Phone Input -->
+      <div id="phoneStep" class="max-w-sm w-full bg-white p-6 sm:p-8 rounded-3xl border border-slate-200 shadow-xl space-y-5 text-center">
+        <div class="w-12 h-12 rounded-2xl bg-indigo-50 text-indigo-600 flex items-center justify-center mx-auto text-xl shadow-inner">
+          📱
+        </div>
+        <div>
+          <h2 class="text-xl font-extrabold text-slate-900">Sign In with Phone</h2>
+          <p class="text-xs text-slate-500 mt-1">Enter your mobile number to get a verification code</p>
+        </div>
+
+        <div class="text-left space-y-1">
+          <label class="text-[11px] font-bold text-slate-700 uppercase tracking-wider">Mobile Number</label>
+          <div class="flex items-center rounded-2xl border-2 border-slate-300 bg-white focus-within:border-indigo-600 overflow-hidden shadow-xs">
+            <span class="px-3 py-2.5 text-xs font-bold bg-slate-100 border-r border-slate-200 text-slate-700">🇮🇳 +91</span>
+            <input id="inputPhone" type="tel" value="9876543210" placeholder="98765 43210" maxlength="10" class="w-full text-xs font-bold p-2.5 bg-white text-slate-900 focus:outline-none" />
+          </div>
+          <p class="text-[10px] text-slate-400 mt-1">💡 Demo Mode: Pre-filled with demo number for easy testing.</p>
+        </div>
+
+        <button onclick="submitPhone()" class="w-full py-3 rounded-2xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs shadow-md shadow-indigo-200 transition-all">
+          Get Verification OTP ➔
+        </button>
+      </div>
+
+      <!-- SUB-STEP 2: OTP Verification -->
+      <div id="otpStep" class="hidden max-w-sm w-full bg-white p-6 sm:p-8 rounded-3xl border border-slate-200 shadow-xl space-y-5 text-center">
+        <div class="w-12 h-12 rounded-2xl bg-emerald-50 text-emerald-600 flex items-center justify-center mx-auto text-xl shadow-inner">
+          🔒
+        </div>
+        <div>
+          <h2 class="text-xl font-extrabold text-slate-900">Verify OTP</h2>
+          <p id="otpPhoneLabel" class="text-xs text-slate-500 mt-1">Code sent to +91 98765 43210</p>
+        </div>
+
+        <div class="space-y-2">
+          <label class="text-[11px] font-bold text-slate-700 uppercase tracking-wider block">Enter 4-Digit Code</label>
+          <input id="inputOtp" type="text" maxlength="4" placeholder="1 2 3 4" class="w-full text-center text-2xl font-black tracking-widest text-indigo-700 p-2.5 rounded-2xl border-2 border-slate-300 bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 shadow-xs" />
+          
+          <div class="bg-indigo-50 p-2.5 rounded-xl border border-indigo-100 flex items-center justify-between text-xs">
+            <span class="text-indigo-900 text-[11px]">Testing OTP: <strong>1234</strong></span>
+            <button onclick="autoFillOtp()" class="text-[11px] font-bold text-indigo-700 underline">Auto-fill 1234</button>
+          </div>
+        </div>
+
+        <div class="flex items-center gap-2">
+          <button onclick="backToPhone()" class="py-2.5 px-4 text-xs font-semibold text-slate-600 hover:bg-slate-100 rounded-xl border border-slate-200">Back</button>
+          <button onclick="submitOtp()" class="flex-1 py-3 rounded-2xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs shadow-md shadow-indigo-200 transition-all">
+            Verify & Continue ➔
+          </button>
+        </div>
+      </div>
+
+      <!-- SUB-STEP 3: Profile Details -->
+      <div id="detailsStep" class="hidden max-w-md w-full bg-white p-6 sm:p-8 rounded-3xl border border-slate-200 shadow-xl space-y-4">
+        <div class="text-center">
+          <span class="text-xs font-bold text-indigo-600 uppercase tracking-wider">Step 3 of 3</span>
+          <h2 class="text-xl font-extrabold text-slate-900 mt-0.5">Tell Us About Yourself</h2>
+          <p class="text-xs text-slate-500">We'll use this to match compatible flatmates and PGs</p>
+        </div>
+
+        <div class="space-y-3 text-left text-xs">
+          <div>
+            <label class="font-bold text-slate-700 block mb-1">Full Name</label>
+            <input id="inputName" type="text" value="Rahul Sharma" class="w-full p-2.5 rounded-xl border-2 border-slate-300 bg-white text-slate-900 font-bold focus:outline-none focus:ring-1 focus:ring-indigo-500 shadow-xs" />
+          </div>
+
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <label class="font-bold text-slate-700 block mb-1">Gender</label>
+              <select id="inputGender" class="w-full p-2.5 rounded-xl border-2 border-slate-300 bg-white text-slate-900 font-bold focus:outline-none shadow-xs">
+                <option>Male</option>
+                <option>Female</option>
+                <option>Non-binary</option>
+              </select>
+            </div>
+            <div>
+              <label class="font-bold text-slate-700 block mb-1">Age</label>
+              <input id="inputAge" type="number" value="21" class="w-full p-2.5 rounded-xl border-2 border-slate-300 bg-white text-slate-900 font-bold focus:outline-none shadow-xs" />
+            </div>
+          </div>
+
+          <div class="grid grid-cols-2 gap-3">
+            <div>
+              <label class="font-bold text-slate-700 block mb-1">Occupation</label>
+              <select id="inputOcc" class="w-full p-2.5 rounded-xl border-2 border-slate-300 bg-white text-slate-900 font-bold focus:outline-none shadow-xs">
+                <option>College Student</option>
+                <option>Working Professional</option>
+                <option>Intern</option>
+              </select>
+            </div>
+            <div>
+              <label class="font-bold text-slate-700 block mb-1">Target City</label>
+              <select id="inputCity" class="w-full p-2.5 rounded-xl border-2 border-slate-300 bg-white text-slate-900 font-bold focus:outline-none shadow-xs">
+                <option>Bangalore</option>
+                <option>Mumbai</option>
+                <option>Delhi NCR</option>
+                <option>Hyderabad</option>
+                <option>Pune</option>
+              </select>
+            </div>
+          </div>
+
+          <div>
+            <label class="font-bold text-slate-700 block mb-1">College or Company Name</label>
+            <input id="inputCollege" type="text" value="Tech Institute of Engineering" class="w-full p-2.5 rounded-xl border-2 border-slate-300 bg-white text-slate-900 font-bold focus:outline-none shadow-xs" />
+          </div>
+
+          <div>
+            <div class="flex justify-between items-center font-bold text-slate-700 mb-1">
+              <span>Max Monthly Budget</span>
+              <span id="budgetLabel" class="text-indigo-700 font-extrabold text-sm">₹9,500/mo</span>
+            </div>
+            <input id="inputBudget" type="range" min="5000" max="25000" step="500" value="9500" oninput="document.getElementById('budgetLabel').innerText = '₹' + parseInt(this.value).toLocaleString() + '/mo'" class="w-full accent-indigo-600 cursor-pointer" />
+          </div>
+        </div>
+
+        <button onclick="submitDetails()" class="w-full py-3 rounded-2xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs shadow-md shadow-indigo-200 transition-all">
+          Complete Profile & Start Searching ➔
+        </button>
+      </div>
+
+    </div>
+
+
+    <!-- VIEW 2: MAIN DASHBOARD TABS (Visible once logged in) -->
+    <div id="mainDashboard" class="hidden p-4 sm:p-6 flex-1 space-y-6">
+      
+      <!-- PAGE 1: SEARCH ROOMS OR PGS -->
+      <section id="tabRooms" class="space-y-5">
+        <div>
+          <span class="text-xs font-bold text-indigo-600 uppercase tracking-wider">Independent Accommodations</span>
+          <h2 class="text-xl sm:text-2xl font-extrabold text-slate-900 mt-0.5">Search Rooms & Student PGs</h2>
+          <p class="text-xs text-slate-500">Curated Boys, Girls, and Co-Living PGs with food and housekeeping included.</p>
+        </div>
+
+        <!-- Filter Bar -->
+        <div class="bg-slate-50 p-3.5 rounded-2xl border border-slate-200 flex flex-wrap items-center justify-between gap-3 text-xs">
+          <div class="flex items-center gap-1.5">
+            <span class="font-bold text-slate-700 mr-1">Filter:</span>
+            <button onclick="filterRooms('All')" class="px-2.5 py-1 rounded-lg bg-indigo-600 text-white font-bold">All</button>
+            <button onclick="filterRooms('Boys PG')" class="px-2.5 py-1 rounded-lg bg-white border border-slate-300 text-slate-700 font-semibold shadow-2xs">Boys PG</button>
+            <button onclick="filterRooms('Girls PG')" class="px-2.5 py-1 rounded-lg bg-white border border-slate-300 text-slate-700 font-semibold shadow-2xs">Girls PG</button>
+            <button onclick="filterRooms('Co-Living')" class="px-2.5 py-1 rounded-lg bg-white border border-slate-300 text-slate-700 font-semibold shadow-2xs">Co-Living</button>
+          </div>
+          <div class="text-slate-600 text-[11px]">
+            📍 Areas: <strong>Koramangala, HSR Layout, Indiranagar, Electronic City</strong>
+          </div>
+        </div>
+
+        <!-- Room Cards Grid -->
+        <div id="roomsGrid" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <!-- Dynamically populated cards -->
+        </div>
+      </section>
+
+
+      <!-- PAGE 2: SEARCH PG WITH PERSON ALREADY LIVING THERE -->
+      <section id="tabShared" class="hidden space-y-5">
+        <div>
+          <span class="text-xs font-bold text-violet-600 uppercase tracking-wider">Flatmate Replacement</span>
+          <h2 class="text-xl sm:text-2xl font-extrabold text-slate-900 mt-0.5">PG with Person Already Living There</h2>
+          <p class="text-xs text-slate-500">Move into an active flat. Click any card to inspect the <strong>Total Rent Details</strong>, <strong>Share Details</strong>, and the <strong>Roommate Compatibility Quiz</strong>.</p>
+        </div>
+
+        <div id="sharedGrid" class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          <!-- Dynamically populated shared PG cards -->
+        </div>
+      </section>
+
+
+      <!-- PAGE 3: RENT SPLITTER TOOL (High-contrast clean design, no black boxes) -->
+      <section id="tabSplitter" class="hidden space-y-5">
+        <div>
+          <span class="text-xs font-bold text-emerald-600 uppercase tracking-wider">Fair Housing Utility</span>
+          <h2 class="text-xl sm:text-2xl font-extrabold text-slate-900 mt-0.5">Fair Shared Rent & Utility Calculator</h2>
+          <p class="text-xs text-slate-500">Accurately divide 2BHK/3BHK rent based on room sqft and attached private bathrooms.</p>
+        </div>
+
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 bg-slate-50 p-6 rounded-3xl border border-slate-200">
+          
+          <!-- Input Form Column -->
+          <div class="space-y-4 text-xs">
+            <div>
+              <label class="font-bold text-slate-800 block mb-1 text-xs">Total Flat Rent (₹)</label>
+              <input id="calcRent" type="number" value="18000" oninput="updateSplitter()" class="w-full p-3 rounded-xl border-2 border-slate-300 bg-white font-extrabold text-indigo-700 shadow-2xs text-sm" />
+            </div>
+
+            <div>
+              <label class="font-bold text-slate-800 block mb-1 text-xs">Total Utilities & Cook (₹)</label>
+              <input id="calcUtils" type="number" value="4000" oninput="updateSplitter()" class="w-full p-3 rounded-xl border-2 border-slate-300 bg-white font-extrabold text-slate-800 shadow-2xs text-sm" />
+            </div>
+
+            <div class="grid grid-cols-2 gap-3 pt-1">
+              <div>
+                <label class="font-bold text-slate-800 block mb-1 text-xs">Room 1 Size (Master with Bath)</label>
+                <div class="relative">
+                  <input id="calcR1" type="number" value="180" oninput="updateSplitter()" class="w-full p-2.5 pr-8 rounded-xl border-2 border-slate-300 bg-white font-bold text-slate-800 shadow-2xs text-xs" />
+                  <span class="absolute right-2.5 top-1/2 -translate-y-1/2 text-[10px] text-slate-400 font-bold">sqft</span>
+                </div>
+              </div>
+
+              <div>
+                <label class="font-bold text-slate-800 block mb-1 text-xs">Room 2 Size (Standard)</label>
+                <div class="relative">
+                  <input id="calcR2" type="number" value="140" oninput="updateSplitter()" class="w-full p-2.5 pr-8 rounded-xl border-2 border-slate-300 bg-white font-bold text-slate-800 shadow-2xs text-xs" />
+                  <span class="absolute right-2.5 top-1/2 -translate-y-1/2 text-[10px] text-slate-400 font-bold">sqft</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="p-3 bg-white rounded-xl border border-slate-200 text-[11px] text-slate-500 space-y-0.5">
+              <p class="font-bold text-slate-700">Formula Details:</p>
+              <p>• 25% Common Area Pool: Split equally for shared living hall & kitchen.</p>
+              <p>• 75% Private Pool: Weighted by square footage + 8% master bath premium.</p>
+            </div>
+          </div>
+
+          <!-- Output Results Column: High Contrast Light Indigo Card (No Black Box) -->
+          <div class="bg-indigo-50 border-2 border-indigo-200 text-slate-900 p-5 rounded-2xl shadow-sm space-y-3.5 text-xs flex flex-col justify-between">
+            <div>
+              <div class="flex items-center justify-between pb-2 border-b border-indigo-200">
+                <h4 class="font-extrabold text-indigo-900 text-sm flex items-center gap-1.5">
+                  <span>⚖️ Fair Distribution Results</span>
+                </h4>
+                <span class="text-[10px] font-bold px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 border border-emerald-300">
+                  Zero-Sum Balanced
+                </span>
+              </div>
+
+              <div class="space-y-2.5 mt-3">
+                <div class="p-3 bg-white rounded-xl border border-indigo-100 shadow-2xs space-y-1">
+                  <div class="flex justify-between items-center">
+                    <p class="font-bold text-slate-800">Room 1 (Master with Attached Bath):</p>
+                    <span class="text-[10px] text-indigo-600 font-bold">Larger + Bath</span>
+                  </div>
+                  <p class="text-2xl font-black text-indigo-700" id="resR1">₹12,250/mo</p>
+                  <p class="text-[11px] text-slate-500">Includes private bath surcharge + equal utility split</p>
+                </div>
+
+                <div class="p-3 bg-white rounded-xl border border-indigo-100 shadow-2xs space-y-1">
+                  <div class="flex justify-between items-center">
+                    <p class="font-bold text-slate-800">Room 2 (Standard Bedroom):</p>
+                    <span class="text-[10px] text-slate-500 font-bold">Standard Size</span>
+                  </div>
+                  <p class="text-2xl font-black text-slate-800" id="resR2">₹9,750/mo</p>
+                  <p class="text-[11px] text-slate-500">Proportional room share + equal utility split</p>
+                </div>
+              </div>
+            </div>
+
+            <div class="p-2.5 bg-emerald-100/70 rounded-xl border border-emerald-300 text-emerald-900 text-[11px] font-semibold flex items-center gap-1.5">
+              <span>✓ Total mathematically balances to ₹18,000 rent + ₹4,000 utilities.</span>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+    </div>
+
+
+    <!-- MODAL: SHARED PG DETAILS + RENT SHARE + COMPATIBILITY QUIZ (No Black Header) -->
+    <div id="sharedModal" class="hidden fixed inset-0 z-50 bg-slate-900/60 backdrop-blur-xs flex items-center justify-center p-3">
+      <div class="bg-white rounded-3xl max-w-xl w-full border border-slate-200 shadow-2xl overflow-hidden animate-in fade-in zoom-in-95 duration-150">
+        
+        <!-- Modal Top (Vibrant Indigo Gradient, not black) -->
+        <div class="bg-gradient-to-r from-indigo-700 via-indigo-800 to-violet-800 text-white p-4 px-6 flex items-center justify-between">
+          <div class="flex items-center gap-3">
+            <div class="w-10 h-10 rounded-xl bg-white/20 backdrop-blur-sm border border-white/30 flex items-center justify-center text-lg font-bold">
+              👤
+            </div>
+            <div>
+              <h3 id="modalResidentName" class="font-bold text-sm">Aditya Verma (23)</h3>
+              <p id="modalResidentJob" class="text-[11px] text-indigo-100">Current Flatmate • Software Engineer</p>
+            </div>
+          </div>
+          <button onclick="closeSharedModal()" class="w-7 h-7 rounded-full bg-white/10 hover:bg-white/20 text-white flex items-center justify-center text-sm font-bold">✕</button>
+        </div>
+
+        <!-- Modal Tabs -->
+        <div class="flex border-b border-slate-200 bg-slate-50 text-xs font-bold">
+          <button id="modalTabRentBtn" onclick="switchModalTab('rent')" class="flex-1 py-2.5 text-indigo-700 border-b-2 border-indigo-600 bg-white">
+            💰 Rent Details & Share
+          </button>
+          <button id="modalTabQuizBtn" onclick="switchModalTab('quiz')" class="flex-1 py-2.5 text-slate-500 border-b-2 border-transparent hover:text-slate-800">
+            ✨ Compatibility Quiz (92% Match)
+          </button>
+        </div>
+
+        <!-- Modal Content: RENT TAB -->
+        <div id="modalRentContent" class="p-5 space-y-4 max-h-[60vh] overflow-y-auto text-xs">
+          <div>
+            <h4 id="modalPgTitle" class="font-bold text-slate-900 text-sm">Spacious 2BHK Room Share in Koramangala</h4>
+            <p id="modalPgAddress" class="text-slate-500 text-[11px]">17th Cross, Near Sony World Signal, Koramangala</p>
+          </div>
+
+          <!-- Highlight Cards -->
+          <div class="grid grid-cols-2 gap-3">
+            <div class="p-3 bg-slate-50 rounded-xl border border-slate-200">
+              <p class="text-[10px] text-slate-400 font-bold uppercase">Total Flat Rent</p>
+              <p id="modalTotalRent" class="text-base font-black text-slate-800">₹18,000/mo</p>
+              <p class="text-[10px] text-slate-500">Split between 2 persons</p>
+            </div>
+            <div class="p-3 bg-indigo-600 text-white rounded-xl shadow-sm">
+              <p class="text-[10px] text-indigo-200 font-bold uppercase">Your Monthly Share</p>
+              <p id="modalYourShare" class="text-base font-black">₹9,000/mo</p>
+              <p id="modalDeposit" class="text-[10px] text-indigo-200">Deposit: ₹15,000</p>
+            </div>
+          </div>
+
+          <!-- Breakdown Table -->
+          <div class="border border-slate-200 rounded-xl overflow-hidden divide-y divide-slate-100">
+            <div class="p-2.5 bg-slate-100 font-bold text-slate-700 text-[11px]">Itemized Monthly Share Breakdown:</div>
+            <div class="p-2.5 flex justify-between bg-white text-slate-700"><span>Base Room Rent:</span><strong id="modalCostRent" class="text-slate-900 font-bold">₹7,800</strong></div>
+            <div class="p-2.5 flex justify-between bg-white text-slate-700"><span>Cook & Daily Food Share:</span><strong id="modalCostFood" class="text-slate-900 font-bold">₹3,200</strong></div>
+            <div class="p-2.5 flex justify-between bg-white text-slate-700"><span>Maid & Cleaning:</span><strong id="modalCostMaid" class="text-slate-900 font-bold">₹600</strong></div>
+            <div class="p-2.5 flex justify-between bg-white text-slate-700"><span>WiFi (200 Mbps) & Shared Power:</span><strong id="modalCostWifi" class="text-slate-900 font-bold">₹600</strong></div>
+            <div class="p-2.5 flex justify-between bg-indigo-50 font-bold text-indigo-900">
+              <span>All-Inclusive Total Per Month:</span>
+              <strong id="modalCostTotal" class="text-indigo-800 font-black">₹12,200</strong>
+            </div>
+          </div>
+
+          <div class="bg-slate-50 p-3 rounded-xl border border-slate-200 space-y-1">
+            <p class="font-bold text-slate-800">Resident Routine & Rules:</p>
+            <p id="modalResidentBio" class="text-slate-600 text-[11px] italic">"Very chill, work hybrid, like watching football on weekends, clean common spaces."</p>
+          </div>
+        </div>
+
+        <!-- Modal Content: QUIZ TAB -->
+        <div id="modalQuizContent" class="hidden p-5 space-y-4 max-h-[60vh] overflow-y-auto text-xs">
+          <div class="p-3 bg-emerald-50 border border-emerald-200 rounded-xl flex items-center justify-between">
+            <div>
+              <p class="font-bold text-emerald-950">Roommate Harmony Score: <span id="quizScore" class="font-black">92% Match</span></p>
+              <p class="text-[11px] text-emerald-700">Calculated between your habits and the current flatmate.</p>
+            </div>
+            <span class="text-xl">🎯</span>
+          </div>
+
+          <div class="space-y-3 text-left">
+            <p class="font-bold text-slate-700 text-[11px] uppercase tracking-wider">Test Compatibility in Real Time:</p>
+
+            <div class="p-2.5 bg-slate-50 rounded-xl border border-slate-200 space-y-1">
+              <div class="flex justify-between font-semibold">
+                <span>1. Sleep Schedule</span>
+                <span id="quizSleepLabel" class="text-indigo-700 font-bold">Morning Aligned</span>
+              </div>
+              <input type="range" min="1" max="5" value="2" oninput="updateQuizMatch()" id="quizSleep" class="w-full accent-indigo-600 cursor-pointer" />
+            </div>
+
+            <div class="p-2.5 bg-slate-50 rounded-xl border border-slate-200 space-y-1">
+              <div class="flex justify-between font-semibold">
+                <span>2. Cleanliness Standard</span>
+                <span id="quizCleanLabel" class="text-indigo-700 font-bold">Spotless (4/5)</span>
+              </div>
+              <input type="range" min="1" max="5" value="4" oninput="updateQuizMatch()" id="quizClean" class="w-full accent-indigo-600 cursor-pointer" />
+            </div>
+
+            <div class="p-2.5 bg-slate-50 rounded-xl border border-slate-200 space-y-1">
+              <div class="flex justify-between font-semibold">
+                <span>3. Food Habit</span>
+                <span id="quizDietLabel" class="text-indigo-700 font-bold">Vegetarian</span>
+              </div>
+              <div class="flex gap-2 pt-1">
+                <button onclick="setDiet('Vegetarian')" class="px-2.5 py-1 rounded bg-indigo-600 text-white font-bold">Vegetarian</button>
+                <button onclick="setDiet('Non-Vegetarian')" class="px-2.5 py-1 rounded bg-white border border-slate-300 text-slate-700 font-semibold shadow-2xs">Non-Veg</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Modal Footer -->
+        <div class="p-3.5 bg-slate-50 border-t border-slate-100 flex items-center justify-between">
+          <button onclick="closeSharedModal()" class="px-4 py-2 text-xs font-semibold text-slate-600 hover:bg-slate-200 rounded-xl border border-slate-200">Close</button>
+          <button id="modalActionBtn" onclick="handleSendRequest()" class="px-5 py-2 text-xs font-bold bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl shadow-sm transition-all">
+            Request to Share Room ➔
+          </button>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="p-3 bg-white border-t border-slate-100 text-center text-[11px] text-slate-500 font-medium">
+      SmartRent & PG Match • 30% Milestone Prototype • College Mini-Project Demo
+    </footer>
+
+  </div>
+
+  <script>
+    // In-memory data store for the interactive prototype
+    const ROOMS = [
+      {
+        id: 1,
+        title: "Stanza Living - Maple House (Premium Boys PG)",
+        type: "Boys PG",
+        address: "Near Christ University, Hosur Road, Koramangala",
+        rent: "₹9,000",
+        deposit: "₹9,000",
+        food: "3 Meals Daily Included (North & South Indian)",
+        amenities: "WiFi, Food, Laundry, Daily Housekeeping, AC",
+        sharing: "Double (₹9,000) • Single (₹14,000)",
+        contact: "+91 91234 56780"
+      },
+      {
+        id: 2,
+        title: "Zolo Stays - Blossom Luxury Girls PG",
+        type: "Girls PG",
+        address: "14th Main, Sector 4, HSR Layout",
+        rent: "₹8,500",
+        deposit: "₹8,500",
+        food: "Homely Veg/Non-Veg Meals Included",
+        amenities: "24/7 Female Warden, WiFi, RO Water, Washing Machine",
+        sharing: "Double (₹8,500) • Triple (₹7,000)",
+        contact: "+91 92345 67891"
+      },
+      {
+        id: 3,
+        title: "Urban Nest - Unisex Co-Living PG & Flats",
+        type: "Co-Living",
+        address: "Electronic City Phase 1, Near Infosys",
+        rent: "₹7,500",
+        deposit: "₹7,500",
+        food: "Breakfast & Dinner Included",
+        amenities: "Coworking Space, Gym, Fast WiFi, Power Backup",
+        sharing: "Double (₹7,500) • Triple (₹6,000)",
+        contact: "+91 94567 89123"
+      },
+      {
+        id: 4,
+        title: "Independent Studio Room with Kitchenette",
+        type: "Studio",
+        address: "5th Cross, 100ft Road, Indiranagar",
+        rent: "₹14,000",
+        deposit: "₹25,000",
+        food: "Self Cooking Permitted",
+        amenities: "Private Balcony, Gas connection, AC, 2-Wheeler Parking",
+        sharing: "Private Single / Couple",
+        contact: "+91 93456 78912"
+      }
+    ];
+
+    const SHARED_PGS = [
+      {
+        id: 101,
+        title: "Spacious 2BHK Room Share in Koramangala 4th Block",
+        address: "17th Cross, Near Sony World Signal, Koramangala",
+        totalRent: "₹18,000",
+        yourShare: "₹9,000",
+        deposit: "₹15,000",
+        resident: "Aditya Verma",
+        age: 23,
+        job: "Software Engineer at Startup",
+        bio: "Very chill, keep the kitchen clean, like watching football on weekends.",
+        habits: "Morning Person • Clean: 4/5 • Vegetarian",
+        match: 92,
+        breakdown: { rent: "₹7,800", food: "₹3,200", maid: "₹600", wifi: "₹600", total: "₹12,200" }
+      },
+      {
+        id: 102,
+        title: "Master Bedroom with Attached Bath in HSR Layout",
+        address: "Sector 2, Near 27th Main Road, HSR Layout",
+        totalRent: "₹26,000",
+        yourShare: "₹8,500",
+        deposit: "₹18,000",
+        resident: "Sneha Nair",
+        age: 22,
+        job: "Data Science Student & Intern",
+        bio: "Looking for a female roommate for the master room. I study quietly in the evenings, love yoga.",
+        habits: "Early Riser (6:30am) • Clean: 5/5 • Vegetarian",
+        match: 94,
+        breakdown: { rent: "₹7,500", food: "₹2,800", maid: "₹500", wifi: "₹500", total: "₹11,300" }
+      },
+      {
+        id: 103,
+        title: "Vibrant Flat Share in Indiranagar near Metro",
+        address: "Near Metro Station, 12th Main, Indiranagar",
+        totalRent: "₹22,000",
+        yourShare: "₹11,000",
+        deposit: "₹20,000",
+        resident: "Karan Singhal",
+        age: 24,
+        job: "UI/UX Designer",
+        bio: "Love gaming on weekends, music, and exploring cafes with my flatmate.",
+        habits: "Night Owl (1am) • Clean: 3/5 • Non-Veg",
+        match: 85,
+        breakdown: { rent: "₹9,800", food: "₹3,500", maid: "₹700", wifi: "₹700", total: "₹14,700" }
+      }
+    ];
+
+    let currentSharedPg = SHARED_PGS[0];
+    let userDiet = "Vegetarian";
+
+    // 1. Auth Flow Logic
+    function submitPhone() {
+      const ph = document.getElementById('inputPhone').value;
+      if (ph.length < 10) { alert('Please enter 10 digits'); return; }
+      document.getElementById('otpPhoneLabel').innerText = 'Code sent to +91 ' + ph;
+      document.getElementById('phoneStep').classList.add('hidden');
+      document.getElementById('otpStep').classList.remove('hidden');
+    }
+
+    function autoFillOtp() {
+      document.getElementById('inputOtp').value = '1234';
+    }
+
+    function backToPhone() {
+      document.getElementById('otpStep').classList.add('hidden');
+      document.getElementById('phoneStep').classList.remove('hidden');
+    }
+
+    function submitOtp() {
+      const otp = document.getElementById('inputOtp').value;
+      if (otp.length === 4) {
+        document.getElementById('otpStep').classList.add('hidden');
+        document.getElementById('detailsStep').classList.remove('hidden');
+      } else {
+        alert('Please enter 4 digits (Use demo 1234)');
+      }
+    }
+
+    function submitDetails() {
+      const name = document.getElementById('inputName').value || 'Rahul Sharma';
+      const phone = document.getElementById('inputPhone').value || '9876543210';
+      document.getElementById('navUserName').innerText = name;
+      document.getElementById('navUserPhone').innerText = '+91 ' + phone;
+
+      document.getElementById('authSection').classList.add('hidden');
+      document.getElementById('navHeader').classList.remove('hidden');
+      document.getElementById('mainDashboard').classList.remove('hidden');
+
+      renderRooms();
+      renderShared();
+      updateSplitter();
+    }
+
+    function handleLogout() {
+      document.getElementById('mainDashboard').classList.add('hidden');
+      document.getElementById('navHeader').classList.add('hidden');
+      document.getElementById('authSection').classList.remove('hidden');
+      document.getElementById('detailsStep').classList.add('hidden');
+      document.getElementById('otpStep').classList.add('hidden');
+      document.getElementById('phoneStep').classList.remove('hidden');
+      document.getElementById('inputOtp').value = '';
+    }
+
+    // 2. Tab Navigation
+    function switchTab(tab) {
+      document.getElementById('tabRooms').classList.add('hidden');
+      document.getElementById('tabShared').classList.add('hidden');
+      document.getElementById('tabSplitter').classList.add('hidden');
+
+      document.getElementById('tabRoomsBtn').classList.remove('active', 'text-white');
+      document.getElementById('tabSharedBtn').classList.remove('active', 'text-white');
+      document.getElementById('tabSplitterBtn').classList.remove('active', 'text-white');
+
+      if (tab === 'rooms') {
+        document.getElementById('tabRooms').classList.remove('hidden');
+        document.getElementById('tabRoomsBtn').classList.add('active');
+      } else if (tab === 'shared') {
+        document.getElementById('tabShared').classList.remove('hidden');
+        document.getElementById('tabSharedBtn').classList.add('active');
+      } else if (tab === 'splitter') {
+        document.getElementById('tabSplitter').classList.remove('hidden');
+        document.getElementById('tabSplitterBtn').classList.add('active');
+        updateSplitter();
+      }
+    }
+
+    // 3. Render Cards
+    function renderRooms(filterType = 'All') {
+      const grid = document.getElementById('roomsGrid');
+      const filtered = filterType === 'All' ? ROOMS : ROOMS.filter(r => r.type.includes(filterType));
+      
+      grid.innerHTML = filtered.map(r => `
+        <div class="p-4 rounded-2xl border border-slate-200 bg-white hover:border-indigo-300 shadow-sm flex flex-col justify-between space-y-3">
+          <div>
+            <div class="flex justify-between items-start">
+              <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-indigo-50 text-indigo-700 border border-indigo-200">${r.type}</span>
+              <span class="text-base font-black text-indigo-700">${r.rent}<span class="text-[10px] text-slate-500 font-normal">/mo</span></span>
+            </div>
+            <h3 class="font-bold text-slate-900 text-sm mt-1.5">${r.title}</h3>
+            <p class="text-xs text-slate-500 mt-0.5">📍 ${r.address}</p>
+            <div class="mt-2 bg-emerald-50 text-emerald-800 p-2 rounded-lg text-[11px] font-medium border border-emerald-100">
+              🍲 ${r.food}
+            </div>
+            <p class="text-[11px] text-slate-600 mt-2"><strong>Sharing:</strong> ${r.sharing}</p>
+          </div>
+          <div class="pt-2 border-t border-slate-100 flex justify-between items-center text-xs">
+            <span class="text-slate-500 text-[11px]">Deposit: ${r.deposit}</span>
+            <button onclick="alert('PG Warden Contact: ' + '${r.contact}')" class="px-3.5 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs shadow-2xs">
+              Call Warden
+            </button>
+          </div>
+        </div>
+      `).join('');
+    }
+
+    function filterRooms(type) {
+      renderRooms(type);
+    }
+
+    function renderShared() {
+      const grid = document.getElementById('sharedGrid');
+      grid.innerHTML = SHARED_PGS.map(spg => `
+        <div class="p-4 rounded-2xl border border-slate-200 bg-white hover:border-violet-300 shadow-sm flex flex-col justify-between space-y-3">
+          <div>
+            <div class="flex justify-between items-start">
+              <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-violet-50 text-violet-700 border border-violet-200">Shared Flat</span>
+              <span class="text-xs font-black px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200">✨ ${spg.match}% Match</span>
+            </div>
+            <h3 class="font-bold text-slate-900 text-sm mt-1.5">${spg.title}</h3>
+            <p class="text-xs text-slate-500 mt-0.5">📍 ${spg.address}</p>
+
+            <div class="mt-3 p-2.5 bg-slate-50 rounded-xl border border-slate-200 flex items-center gap-2.5">
+              <div class="w-9 h-9 rounded-xl bg-violet-200 text-violet-800 flex items-center justify-center font-bold text-sm">
+                ${spg.resident.charAt(0)}
+              </div>
+              <div>
+                <p class="text-xs font-bold text-slate-900">Current Flatmate: ${spg.resident} (${spg.age})</p>
+                <p class="text-[10px] text-slate-500">${spg.job}</p>
+              </div>
+            </div>
+
+            <div class="mt-3 flex justify-between items-center text-xs p-2.5 bg-indigo-50/70 rounded-xl border border-indigo-100">
+              <span class="text-slate-600 text-[11px]">Total: <strong class="text-slate-800">${spg.totalRent}</strong></span>
+              <span class="text-indigo-700 font-extrabold text-xs">Your Share: ${spg.yourShare}/mo</span>
+            </div>
+          </div>
+
+          <button onclick="openSharedModal(${spg.id})" class="w-full py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs shadow-sm">
+            View Rent Share & Compatibility Quiz ➔
+          </button>
+        </div>
+      `).join('');
+    }
+
+    // 4. Shared PG Modal
+    function openSharedModal(id) {
+      const spg = SHARED_PGS.find(p => p.id === id) || SHARED_PGS[0];
+      currentSharedPg = spg;
+
+      document.getElementById('modalResidentName').innerText = spg.resident + ' (' + spg.age + ')';
+      document.getElementById('modalResidentJob').innerText = 'Current Flatmate • ' + spg.job;
+      document.getElementById('modalPgTitle').innerText = spg.title;
+      document.getElementById('modalPgAddress').innerText = spg.address;
+      document.getElementById('modalTotalRent').innerText = spg.totalRent + '/mo';
+      document.getElementById('modalYourShare').innerText = spg.yourShare + '/mo';
+      document.getElementById('modalDeposit').innerText = 'Deposit Share: ' + spg.deposit;
+      document.getElementById('modalResidentBio').innerText = '"' + spg.bio + '"';
+
+      document.getElementById('modalCostRent').innerText = spg.breakdown.rent;
+      document.getElementById('modalCostFood').innerText = spg.breakdown.food;
+      document.getElementById('modalCostMaid').innerText = spg.breakdown.maid;
+      document.getElementById('modalCostWifi').innerText = spg.breakdown.wifi;
+      document.getElementById('modalCostTotal').innerText = spg.breakdown.total;
+
+      switchModalTab('rent');
+      document.getElementById('sharedModal').classList.remove('hidden');
+    }
+
+    function closeSharedModal() {
+      document.getElementById('sharedModal').classList.add('hidden');
+    }
+
+    function switchModalTab(tab) {
+      if (tab === 'rent') {
+        document.getElementById('modalRentContent').classList.remove('hidden');
+        document.getElementById('modalQuizContent').classList.add('hidden');
+        document.getElementById('modalTabRentBtn').className = "flex-1 py-2.5 text-indigo-700 border-b-2 border-indigo-600 bg-white font-bold";
+        document.getElementById('modalTabQuizBtn').className = "flex-1 py-2.5 text-slate-500 border-b-2 border-transparent font-medium hover:text-slate-800";
+      } else {
+        document.getElementById('modalRentContent').classList.add('hidden');
+        document.getElementById('modalQuizContent').classList.remove('hidden');
+        document.getElementById('modalTabRentBtn').className = "flex-1 py-2.5 text-slate-500 border-b-2 border-transparent font-medium hover:text-slate-800";
+        document.getElementById('modalTabQuizBtn').className = "flex-1 py-2.5 text-indigo-700 border-b-2 border-indigo-600 bg-white font-bold";
+      }
+    }
+
+    function updateQuizMatch() {
+      const sleep = parseInt(document.getElementById('quizSleep').value);
+      const clean = parseInt(document.getElementById('quizClean').value);
+
+      document.getElementById('quizSleepLabel').innerText = sleep <= 2 ? "Morning Aligned" : "Night Owl";
+      document.getElementById('quizCleanLabel').innerText = clean >= 4 ? "Spotless (" + clean + "/5)" : "Casual (" + clean + "/5)";
+
+      // Recalculate score
+      let score = 92;
+      if (sleep > 3) score -= 8;
+      if (clean < 3) score -= 12;
+      if (userDiet === "Non-Vegetarian") score -= 5;
+
+      document.getElementById('quizScore').innerText = score + '% Match';
+    }
+
+    function setDiet(d) {
+      userDiet = d;
+      document.getElementById('quizDietLabel').innerText = d;
+      updateQuizMatch();
+    }
+
+    function handleSendRequest() {
+      const btn = document.getElementById('modalActionBtn');
+      btn.innerText = "✓ Request Sent to " + currentSharedPg.resident.split(' ')[0] + "!";
+      btn.className = "px-5 py-2 text-xs font-bold bg-emerald-600 text-white rounded-xl shadow-sm";
+      setTimeout(() => {
+        closeSharedModal();
+        btn.innerText = "Request to Share Room ➔";
+        btn.className = "px-5 py-2 text-xs font-bold bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl shadow-sm transition-all";
+      }, 1500);
+    }
+
+    // 5. Rent Splitter Calculation
+    function updateSplitter() {
+      const rent = parseFloat(document.getElementById('calcRent').value) || 18000;
+      const utils = parseFloat(document.getElementById('calcUtils').value) || 4000;
+      const r1 = parseFloat(document.getElementById('calcR1').value) || 180;
+      const r2 = parseFloat(document.getElementById('calcR2').value) || 140;
+
+      const totalSqft = r1 + r2;
+      const commonPool = rent * 0.25; // 25% common
+      const privatePool = rent - commonPool;
+
+      const r1Share = commonPool / 2 + (r1 / totalSqft) * privatePool + (privatePool * 0.08);
+      const r2Share = (rent + utils) - r1Share;
+
+      document.getElementById('resR1').innerText = '₹' + Math.round(r1Share + utils / 2).toLocaleString() + '/mo';
+      document.getElementById('resR2').innerText = '₹' + Math.round(rent + utils - (r1Share + utils / 2)).toLocaleString() + '/mo';
+    }
+  </script>
+
+</body>
+</html>

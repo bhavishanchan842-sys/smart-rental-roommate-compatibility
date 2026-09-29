@@ -301,20 +301,20 @@ export default function RentSplitterPage({ prefillProperty }) {
 
         {/* Right Col: Instant Live Breakdown */}
         <div className="space-y-6">
-          <div className="bg-slate-900 text-white p-6 rounded-3xl border border-slate-800 shadow-xl space-y-6 sticky top-24">
+          <div className="bg-indigo-50/80 text-slate-900 p-6 rounded-3xl border-2 border-indigo-200 shadow-sm space-y-6 sticky top-24">
             
-            <div className="flex items-center justify-between border-b border-slate-800 pb-4">
+            <div className="flex items-center justify-between border-b border-indigo-200 pb-4">
               <div>
-                <h3 className="font-bold text-base text-white">Fair Rent Breakdown</h3>
-                <p className="text-[11px] text-slate-400">Exact penny-balanced distribution</p>
+                <h3 className="font-bold text-base text-indigo-950">Fair Rent Breakdown</h3>
+                <p className="text-[11px] text-slate-500">Exact penny-balanced distribution</p>
               </div>
 
               <button
                 onClick={handleCopySummary}
-                className="p-2 rounded-xl bg-white/10 hover:bg-white/20 text-white transition-colors flex items-center gap-1 text-xs"
+                className="p-2 rounded-xl bg-white border border-indigo-200 hover:bg-indigo-100 text-indigo-700 transition-colors flex items-center gap-1 text-xs font-bold shadow-2xs"
                 title="Copy Summary"
               >
-                {copied ? <Check className="w-4 h-4 text-emerald-400" /> : <Copy className="w-4 h-4" />}
+                {copied ? <Check className="w-4 h-4 text-emerald-600" /> : <Copy className="w-4 h-4" />}
                 <span className="text-[10px]">{copied ? 'Copied' : 'Copy'}</span>
               </button>
             </div>
@@ -322,36 +322,36 @@ export default function RentSplitterPage({ prefillProperty }) {
             {splitResult ? (
               <div className="space-y-4">
                 {splitResult.rooms.map((r, i) => (
-                  <div key={i} className="p-4 rounded-2xl bg-white/5 border border-white/10 space-y-2">
+                  <div key={i} className="p-4 rounded-2xl bg-white border border-indigo-100 shadow-2xs space-y-2">
                     <div className="flex items-center justify-between">
                       <div>
-                        <p className="font-bold text-sm text-indigo-300">{r.occupant_name}</p>
-                        <p className="text-[11px] text-slate-400">{r.room_name}</p>
+                        <p className="font-bold text-sm text-indigo-700">{r.occupant_name}</p>
+                        <p className="text-[11px] text-slate-500 font-medium">{r.room_name}</p>
                       </div>
 
                       <div className="text-right">
-                        <p className="text-lg font-black text-white">${r.total_monthly}</p>
-                        <p className="text-[10px] text-slate-400">{r.percentage_of_rent}% of rent</p>
+                        <p className="text-xl font-black text-slate-900">${r.total_monthly}</p>
+                        <p className="text-[10px] text-slate-500">{r.percentage_of_rent}% of rent</p>
                       </div>
                     </div>
 
-                    <div className="pt-2 border-t border-white/5 flex items-center justify-between text-[11px] text-slate-400">
-                      <span>Base Rent: <strong className="text-slate-200">${r.calculated_rent}</strong></span>
-                      <span>Utilities: <strong className="text-slate-200">${r.utility_share}</strong></span>
+                    <div className="pt-2 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-600">
+                      <span>Base Rent: <strong className="text-slate-900">${r.calculated_rent}</strong></span>
+                      <span>Utilities: <strong className="text-slate-900">${r.utility_share}</strong></span>
                     </div>
 
-                    <p className="text-[10px] text-slate-400 italic leading-snug">
+                    <p className="text-[10px] text-slate-500 italic leading-snug">
                       {r.formula_explanation}
                     </p>
                   </div>
                 ))}
 
-                <div className="p-3 bg-emerald-500/10 border border-emerald-500/20 rounded-xl text-[11px] text-emerald-300 space-y-1">
-                  <p className="font-bold flex items-center gap-1">
-                    <CheckCircle2 className="w-3.5 h-3.5" />
+                <div className="p-3 bg-emerald-50 border border-emerald-200 rounded-xl text-[11px] text-emerald-900 space-y-1">
+                  <p className="font-bold flex items-center gap-1 text-emerald-800">
+                    <CheckCircle2 className="w-3.5 h-3.5 text-emerald-600" />
                     Zero-Sum Verified
                   </p>
-                  <p className="text-slate-300 text-[10px]">
+                  <p className="text-emerald-700 text-[10px]">
                     Sum of individual rents strictly equals ${splitResult.total_rent}. Common area share per occupant: ${splitResult.common_area_share_per_person}.
                   </p>
                 </div>

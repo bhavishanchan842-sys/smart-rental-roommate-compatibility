@@ -3,6 +3,29 @@
 @layer base {
   body {
     @apply bg-slate-50 text-slate-900 font-sans antialiased selection:bg-indigo-500 selection:text-white;
+    color-scheme: light;
+  }
+
+  /* Ensure inputs, selects, and textareas are always crisp white with high-contrast dark text */
+  input, select, textarea {
+    background-color: #ffffff !important;
+    color: #0f172a !important;
+    color-scheme: light !important;
+    border-color: #cbd5e1;
+  }
+
+  input[type="number"], input[type="text"], input[type="tel"] {
+    background-color: #ffffff !important;
+    color: #0f172a !important;
+    font-weight: 600;
+  }
+
+  input:focus, select:focus, textarea:focus {
+    background-color: #ffffff !important;
+    color: #0f172a !important;
+    border-color: #4f46e5;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.15);
   }
 }
 

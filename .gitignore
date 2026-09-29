@@ -1,0 +1,17 @@
+# Environments & Dependencies
+venv/
+node_modules/
+dist/
+
+# Python caches & database
+__pycache__/
+*.py[cod]
+*$py.class
+smart_rent.db
+.pytest_cache/
+
+# IDE & OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

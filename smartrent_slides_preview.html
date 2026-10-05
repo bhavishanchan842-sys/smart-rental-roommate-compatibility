@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Smart Rental & Roommate Compatibility Platform - PPT Slides</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+    body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #0f172a; }
+    .slide-aspect { aspect-ratio: 16 / 9; max-height: 85vh; }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col items-center justify-center p-4 select-none">
+
+  <!-- Top Bar Controls -->
+  <header class="w-full max-w-5xl flex items-center justify-between text-white/80 mb-3 px-2 text-xs">
+    <div class="flex items-center gap-2">
+      <span class="font-black text-indigo-400">SMARTRENT & MATCH</span>
+      <span class="text-slate-500">|</span>
+      <span>Mini-Project Evaluation (Phase 1)</span>
+    </div>
+    <div class="flex items-center gap-3">
+      <span>Slide <strong id="slideNum" class="text-white">1</strong> of <strong>12</strong></span>
+      <button onclick="toggleFullScreen()" class="px-2.5 py-1 bg-slate-800 hover:bg-slate-700 text-slate-300 rounded-lg text-xs font-semibold">⛶ Fullscreen</button>
+    </div>
+  </header>
+
+  <!-- Slide Canvas Frame -->
+  <main class="w-full max-w-5xl bg-white rounded-3xl shadow-2xl overflow-hidden slide-aspect flex flex-col justify-between border border-slate-700/50 relative">
+
+    <!-- SLIDE 1: Title -->
+    <div class="slide p-10 sm:p-14 flex-1 flex flex-col justify-center items-center text-center bg-gradient-to-br from-indigo-50/50 via-white to-slate-50">
+      <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-indigo-100/80 text-indigo-700 text-xs font-bold mb-4">
+        🎓 Mini-Project Phase 1 (20% Evaluation)
+      </div>
+      <h1 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-slate-900 tracking-tight max-w-3xl leading-tight">
+        Smart Rental & Roommate Compatibility Platform
+      </h1>
+      <p class="text-slate-600 font-medium text-base sm:text-lg mt-3 max-w-2xl">
+        Intelligent PG Discovery, Habit-Based Matching & Transparent Shared Living in Indian Rupees (₹)
+      </p>
+
+      <div class="mt-8 pt-6 border-t border-slate-200 grid grid-cols-2 gap-8 text-left text-xs">
+        <div>
+          <p class="text-slate-400 font-bold uppercase tracking-wider text-[10px]">Domain</p>
+          <p class="font-bold text-slate-800 text-sm mt-0.5">Web Technologies & Machine Learning</p>
+        </div>
+        <div>
+          <p class="text-slate-400 font-bold uppercase tracking-wider text-[10px]">Location Discovery</p>
+          <p class="font-bold text-slate-800 text-sm mt-0.5">Manual Entry & Google Maps Routing</p>
+        </div>
+      </div>
+    </div>
+
+    <!-- SLIDE 2: 1. Abstract -->
+    <div class="slide hidden p-8 sm:p-12 flex-1 flex flex-col justify-between bg-white">
+      <div>
+        <span class="text-xs font-bold text-indigo-600 uppercase tracking-wider">Section 1</span>
+        <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-1">1. Abstract</h2>
+      </div>
+      <div class="space-y-3.5 my-auto text-xs sm:text-sm">
+        <div class="p-3.5 rounded-2xl bg-slate-50 border border-slate-200">
+          <strong class="text-indigo-700 font-bold">• Core Problem:</strong>
+          <span class="text-slate-700 ml-1.5">Students and interns face high broker fees and severe friction with incompatible roommates.</span>
+        </div>
+        <div class="p-3.5 rounded-2xl bg-slate-50 border border-slate-200">
+          <strong class="text-indigo-700 font-bold">• Proposed Solution:</strong>
+          <span class="text-slate-700 ml-1.5">A dual-mode discovery platform combining verified PG listings with a lifestyle habit matching engine (Cosine Similarity).</span>
+        </div>
+        <div class="p-3.5 rounded-2xl bg-slate-50 border border-slate-200">
+          <strong class="text-indigo-700 font-bold">• Dual-Discovery Mode:</strong>
+          <span class="text-slate-700 ml-1.5">Search independent Boys/Girls PGs OR search shared flats where a person is already living.</span>
+        </div>
+        <div class="p-3.5 rounded-2xl bg-slate-50 border border-slate-200">
+          <strong class="text-indigo-700 font-bold">• Fair Rent Splitter:</strong>
+          <span class="text-slate-700 ml-1.5">Automated formula dividing rent based on bedroom square footage and attached washrooms.</span>
+        </div>
+        <div class="p-3.5 rounded-2xl bg-emerald-50 border border-emerald-200">
+          <strong class="text-emerald-800 font-bold">✓ Key Impact:</strong>
+          <span class="text-emerald-900 ml-1.5">Eliminates brokerage, ensures 100% price transparency in ₹, and prevents roommate disputes.</span>
+        </div>
+      </div>
+      <div class="text-[11px] text-slate-400 text-right">Phase 1 / 20% Milestone Review</div>
+    </div>
+
+    <!-- SLIDE 3: 2. Introduction: Background & Motivation -->
+    <div class="slide hidden p-8 sm:p-12 flex-1 flex flex-col justify-between bg-white">
+      <div>
+        <span class="text-xs font-bold text-indigo-600 uppercase tracking-wider">Section 2</span>
+        <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-1">2. Introduction: Background & Motivation</h2>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 my-auto text-xs sm:text-sm">
+        <div class="p-5 rounded-2xl bg-slate-50 border border-slate-200 space-y-2.5">
+          <h3 class="font-bold text-slate-900 text-base flex items-center gap-1.5">📌 Background</h3>
+          <p class="text-slate-600">• Massive influx of students and young professionals into IT corridors (Bangalore, Pune, Hyderabad).</p>
+          <p class="text-slate-600">• Skyrocketing flat rents make individual leasing unaffordable, forcing flat-sharing.</p>
+          <p class="text-slate-600">• Traditional portals only list empty properties and ignore who you will live with.</p>
+        </div>
+        <div class="p-5 rounded-2xl bg-indigo-50/70 border border-indigo-200 space-y-2.5">
+          <h3 class="font-bold text-indigo-950 text-base flex items-center gap-1.5">🎯 Motivation</h3>
+          <p class="text-indigo-900">• Clashing sleep cycles, cleanliness levels, and dietary habits cause severe stress and mid-lease exits.</p>
+          <p class="text-indigo-900">• Heavy brokerage charges drain student budgets without guaranteeing roommate safety.</p>
+          <p class="text-indigo-900">• Motivation to build an intelligent, single-window habit matching platform.</p>
+        </div>
+      </div>
+      <div class="text-[11px] text-slate-400 text-right">Phase 1 / 20% Milestone Review</div>
+    </div>
+
+    <!-- SLIDE 4: 2. Introduction: Scope -->
+    <div class="slide hidden p-8 sm:p-12 flex-1 flex flex-col justify-between bg-white">
+      <div>
+        <span class="text-xs font-bold text-indigo-600 uppercase tracking-wider">Section 2</span>
+        <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-1">2. Introduction: Project Scope</h2>
+      </div>
+      <div class="space-y-3 my-auto text-xs sm:text-sm">
+        <div class="p-3 rounded-xl bg-slate-50 border border-slate-200">
+          <strong class="text-slate-900 font-bold">1. Target Audience:</strong>
+          <span class="text-slate-600 ml-1.5">College students, corporate interns, and early-career working professionals.</span>
+        </div>
+        <div class="p-3 rounded-xl bg-slate-50 border border-slate-200">
+          <strong class="text-slate-900 font-bold">2. Manual Location Entry:</strong>
+          <span class="text-slate-600 ml-1.5">Type any neighborhood or college manually with 1-click external Google Maps routing.</span>
+        </div>
+        <div class="p-3 rounded-xl bg-slate-50 border border-slate-200">
+          <strong class="text-slate-900 font-bold">3. Multi-Dimension Matchmaking:</strong>
+          <span class="text-slate-600 ml-1.5">Evaluates Sleep Schedule, Cleanliness, Study Routine, and Food Preferences.</span>
+        </div>
+        <div class="p-3 rounded-xl bg-slate-50 border border-slate-200">
+          <strong class="text-slate-900 font-bold">4. Transparent Cost Breakdown:</strong>
+          <span class="text-slate-600 ml-1.5">Itemizes Room Rent, Cook, Maid, and WiFi separately in Indian Rupees (₹).</span>
+        </div>
+        <div class="p-3 rounded-xl bg-slate-100 text-slate-500 border border-slate-200">
+          <strong class="font-bold">❌ Out of Scope (Phase 1):</strong>
+          <span class="ml-1.5">Payment gateway processing and legal lease dispute arbitration.</span>
+        </div>
+      </div>
+      <div class="text-[11px] text-slate-400 text-right">Phase 1 / 20% Milestone Review</div>
+    </div>
+
+    <!-- SLIDE 5: 3. Literature Survey (L S) -->
+    <div class="slide hidden p-8 sm:p-12 flex-1 flex flex-col justify-between bg-white">
+      <div>
+        <span class="text-xs font-bold text-indigo-600 uppercase tracking-wider">Section 3</span>
+        <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-1">3. Literature Survey (L S)</h2>
+      </div>
+      <div class="my-auto overflow-hidden rounded-2xl border border-slate-200 text-xs">
+        <table class="w-full text-left">
+          <thead class="bg-slate-100 text-slate-700 font-bold border-b border-slate-200">
+            <tr>
+              <th class="p-3">Existing System</th>
+              <th class="p-3">Strengths</th>
+              <th class="p-3">Critical Limitations</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-slate-100">
+            <tr class="hover:bg-slate-50">
+              <td class="p-3 font-bold text-slate-900">Traditional Portals (99acres, MagicBricks)</td>
+              <td class="p-3 text-slate-600">Extensive property catalog</td>
+              <td class="p-3 text-rose-600">Zero roommate matching; treats sharing as real estate sale.</td>
+            </tr>
+            <tr class="hover:bg-slate-50">
+              <td class="p-3 font-bold text-slate-900">Social Media (Facebook / WhatsApp)</td>
+              <td class="p-3 text-slate-600">Free community access</td>
+              <td class="p-3 text-rose-600">Unstructured, spam-heavy, unverified, zero privacy.</td>
+            </tr>
+            <tr class="hover:bg-slate-50">
+              <td class="p-3 font-bold text-slate-900">Basic Flatmate Apps (Flatmate.in, Roomster)</td>
+              <td class="p-3 text-slate-600">Basic city and budget filters</td>
+              <td class="p-3 text-rose-600">Superficial matching (only age/budget); no utility splitter.</td>
+            </tr>
+            <tr class="hover:bg-slate-50">
+              <td class="p-3 font-bold text-slate-900">Academic Recommenders (RecSys)</td>
+              <td class="p-3 text-slate-600">Proven vector similarity math</td>
+              <td class="p-3 text-amber-600">Rarely combined into a student-friendly rental workflow.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+      <div class="text-[11px] text-slate-400 text-right">Phase 1 / 20% Milestone Review</div>
+    </div>
+
+    <!-- SLIDE 6: 4. Research Gap -->
+    <div class="slide hidden p-8 sm:p-12 flex-1 flex flex-col justify-between bg-white">
+      <div>
+        <span class="text-xs font-bold text-indigo-600 uppercase tracking-wider">Section 4</span>
+        <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-1">4. Research Gap</h2>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 my-auto text-xs sm:text-sm">
+        <div class="p-4 rounded-2xl bg-rose-50/70 border border-rose-200">
+          <strong class="text-rose-900 font-bold block mb-1">Gap 1: Absence of Habit Matching</strong>
+          <span class="text-rose-800">Existing systems match on budget and city only, ignoring sleep habits, study hours, and cleanliness.</span>
+        </div>
+        <div class="p-4 rounded-2xl bg-rose-50/70 border border-rose-200">
+          <strong class="text-rose-900 font-bold block mb-1">Gap 2: No Resident-In-Place Discovery</strong>
+          <span class="text-rose-800">Portals only show vacant rooms, failing to support moving into an active flat with an existing tenant.</span>
+        </div>
+        <div class="p-4 rounded-2xl bg-rose-50/70 border border-rose-200">
+          <strong class="text-rose-900 font-bold block mb-1">Gap 3: Hidden Extra Charges</strong>
+          <span class="text-rose-800">Listed prices conceal cook, maid, maintenance, and electricity costs until after moving in.</span>
+        </div>
+        <div class="p-4 rounded-2xl bg-rose-50/70 border border-rose-200">
+          <strong class="text-rose-900 font-bold block mb-1">Gap 4: Arbitrary Rent Division</strong>
+          <span class="text-rose-800">No standard tool exists to fairly split rent when bedroom sizes and attached baths are unequal.</span>
+        </div>
+      </div>
+      <div class="p-3 bg-emerald-50 rounded-xl border border-emerald-200 text-xs text-emerald-900 font-bold">
+        🌟 Our Solution: Cosine habit matching + resident replacement listings + itemized cost breakdown + fair rent calculator.
+      </div>
+    </div>
+
+    <!-- SLIDE 7: 5. Problem Statement -->
+    <div class="slide hidden p-8 sm:p-12 flex-1 flex flex-col justify-between bg-white">
+      <div>
+        <span class="text-xs font-bold text-indigo-600 uppercase tracking-wider">Section 5</span>
+        <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-1">5. Problem Statement</h2>
+      </div>
+      <div class="my-auto space-y-6">
+        <div class="p-6 rounded-3xl bg-indigo-50 border-2 border-indigo-200 text-center">
+          <p class="text-base sm:text-lg font-bold text-indigo-950 italic leading-relaxed">
+            "To design and develop a web-based rental discovery and roommate compatibility platform that matches tenants based on multi-dimensional lifestyle habits, enables manual area discovery, and provides transparent, mathematically fair rent and utility cost splitting in Indian Rupees (₹)."
+          </p>
+        </div>
+        <div class="grid grid-cols-3 gap-4 text-xs">
+          <div class="p-3 bg-slate-50 rounded-xl border border-slate-200 text-center">
+            <span class="text-indigo-600 font-bold block text-sm">Brokerage Free</span>
+            <span class="text-slate-600">Zero middleman commission</span>
+          </div>
+          <div class="p-3 bg-slate-50 rounded-xl border border-slate-200 text-center">
+            <span class="text-indigo-600 font-bold block text-sm">Dispute Prevention</span>
+            <span class="text-slate-600">Habit alignment before move-in</span>
+          </div>
+          <div class="p-3 bg-slate-50 rounded-xl border border-slate-200 text-center">
+            <span class="text-indigo-600 font-bold block text-sm">Price Transparency</span>
+            <span class="text-slate-600">100% itemized living expenses</span>
+          </div>
+        </div>
+      </div>
+      <div class="text-[11px] text-slate-400 text-right">Phase 1 / 20% Milestone Review</div>
+    </div>
+
+    <!-- SLIDE 8: 6. Objectives -->
+    <div class="slide hidden p-8 sm:p-12 flex-1 flex flex-col justify-between bg-white">
+      <div>
+        <span class="text-xs font-bold text-indigo-600 uppercase tracking-wider">Section 6</span>
+        <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-1">6. Objectives</h2>
+      </div>
+      <div class="space-y-3 my-auto text-xs sm:text-sm">
+        <div class="p-3 rounded-xl bg-slate-50 border border-slate-200 flex items-center gap-3">
+          <span class="w-7 h-7 rounded-lg bg-indigo-600 text-white font-bold flex items-center justify-center text-xs shrink-0">1</span>
+          <div><strong class="text-slate-900 font-bold">Frictionless Onboarding:</strong> <span class="text-slate-600">Phone-based login with quick 4-digit OTP verification.</span></div>
+        </div>
+        <div class="p-3 rounded-xl bg-slate-50 border border-slate-200 flex items-center gap-3">
+          <span class="w-7 h-7 rounded-lg bg-indigo-600 text-white font-bold flex items-center justify-center text-xs shrink-0">2</span>
+          <div><strong class="text-slate-900 font-bold">Compatibility Algorithm:</strong> <span class="text-slate-600">Compute match % using normalized cosine vector similarity across habits.</span></div>
+        </div>
+        <div class="p-3 rounded-xl bg-slate-50 border border-slate-200 flex items-center gap-3">
+          <span class="w-7 h-7 rounded-lg bg-indigo-600 text-white font-bold flex items-center justify-center text-xs shrink-0">3</span>
+          <div><strong class="text-slate-900 font-bold">Dual Accommodation Modes:</strong> <span class="text-slate-600">Independent Rooms/PGs AND Shared PGs with active flatmates.</span></div>
+        </div>
+        <div class="p-3 rounded-xl bg-slate-50 border border-slate-200 flex items-center gap-3">
+          <span class="w-7 h-7 rounded-lg bg-indigo-600 text-white font-bold flex items-center justify-center text-xs shrink-0">4</span>
+          <div><strong class="text-slate-900 font-bold">Manual Area Discovery:</strong> <span class="text-slate-600">Manual text input with 1-click Google Maps route connectivity.</span></div>
+        </div>
+        <div class="p-3 rounded-xl bg-slate-50 border border-slate-200 flex items-center gap-3">
+          <span class="w-7 h-7 rounded-lg bg-indigo-600 text-white font-bold flex items-center justify-center text-xs shrink-0">5</span>
+          <div><strong class="text-slate-900 font-bold">Fair Utility Splitter:</strong> <span class="text-slate-600">Automate mathematical rent splitting based on room dimensions.</span></div>
+        </div>
+      </div>
+      <div class="text-[11px] text-slate-400 text-right">Phase 1 / 20% Milestone Review</div>
+    </div>
+
+    <!-- SLIDE 9: 7. Methodology -->
+    <div class="slide hidden p-8 sm:p-12 flex-1 flex flex-col justify-between bg-white">
+      <div>
+        <span class="text-xs font-bold text-indigo-600 uppercase tracking-wider">Section 7</span>
+        <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-1">7. Methodology</h2>
+      </div>
+      <div class="my-auto space-y-3 text-xs sm:text-sm">
+        <div class="p-3 rounded-xl bg-indigo-50 border border-indigo-100 flex items-center justify-between">
+          <span class="font-bold text-indigo-900">Step 1: User Profile & Lifestyle Survey</span>
+          <span class="text-indigo-600 text-xs">Sleep, Cleanliness, Study, Diet (1–5 scale)</span>
+        </div>
+        <div class="p-3 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-between">
+          <span class="font-bold text-slate-900">Step 2: Vector Normalization</span>
+          <span class="text-slate-600 text-xs">V = [x₁, x₂, x₃, x₄]</span>
+        </div>
+        <div class="p-3 rounded-xl bg-indigo-50 border border-indigo-100 flex items-center justify-between">
+          <span class="font-bold text-indigo-900">Step 3: Cosine Similarity Matching</span>
+          <span class="text-indigo-600 text-xs">Score = (A · B) / (||A|| × ||B||) ➔ Match % Badge</span>
+        </div>
+        <div class="p-3 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-between">
+          <span class="font-bold text-slate-900">Step 4: Manual Location & Dual Search</span>
+          <span class="text-slate-600 text-xs">Filter listings by entered area + Google Maps routing</span>
+        </div>
+        <div class="p-3 rounded-xl bg-slate-50 border border-slate-200 flex items-center justify-between">
+          <span class="font-bold text-slate-900">Step 5: Rent & Utility Breakdown</span>
+          <span class="text-slate-600 text-xs">Itemize costs + Fair room sqft calculator</span>
+        </div>
+      </div>
+      <div class="text-[11px] text-slate-400 text-right">Phase 1 / 20% Milestone Review</div>
+    </div>
+
+    <!-- SLIDE 10: 8. System Requirements -->
+    <div class="slide hidden p-8 sm:p-12 flex-1 flex flex-col justify-between bg-white">
+      <div>
+        <span class="text-xs font-bold text-indigo-600 uppercase tracking-wider">Section 8</span>
+        <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-1">8. System Requirements</h2>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 my-auto text-xs sm:text-sm">
+        <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-2">
+          <h3 class="font-bold text-slate-900 text-sm flex items-center gap-1.5">💻 Software Requirements</h3>
+          <p><strong>• Frontend:</strong> React 18, Tailwind CSS, Vite</p>
+          <p><strong>• Backend:</strong> Python 3.11+, FastAPI (REST API)</p>
+          <p><strong>• Database:</strong> SQLite / PostgreSQL with SQLAlchemy</p>
+          <p><strong>• Match Engine:</strong> NumPy & SciPy (Vector Math)</p>
+          <p><strong>• Integration:</strong> Google Maps URL API Scheme</p>
+        </div>
+        <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-2">
+          <h3 class="font-bold text-slate-900 text-sm flex items-center gap-1.5">⚙️ Hardware Requirements</h3>
+          <p><strong>• Processor:</strong> Intel Core i3 / AMD Ryzen 3 or higher</p>
+          <p><strong>• RAM:</strong> 4 GB minimum (8 GB recommended)</p>
+          <p><strong>• Storage:</strong> 10 GB available disk space</p>
+          <p><strong>• Network:</strong> Standard Internet connectivity</p>
+          <p><strong>• Devices:</strong> Laptops, Desktops, Tablets, Smartphones</p>
+        </div>
+      </div>
+      <div class="text-[11px] text-slate-400 text-right">Phase 1 / 20% Milestone Review</div>
+    </div>
+
+    <!-- SLIDE 11: 9. Proposed Outcome -->
+    <div class="slide hidden p-8 sm:p-12 flex-1 flex flex-col justify-between bg-white">
+      <div>
+        <span class="text-xs font-bold text-indigo-600 uppercase tracking-wider">Section 9</span>
+        <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-1">9. Proposed Outcome</h2>
+      </div>
+      <div class="space-y-3 my-auto text-xs sm:text-sm">
+        <div class="p-3 rounded-xl bg-emerald-50 border border-emerald-200 text-emerald-950">
+          <strong class="text-emerald-800 font-bold">✓ Working Web Application:</strong> High-contrast responsive interface showing all accommodations in ₹.
+        </div>
+        <div class="p-3 rounded-xl bg-slate-50 border border-slate-200">
+          <strong class="text-indigo-700 font-bold">✓ Dynamic Match Indicator:</strong> Live compatibility score badge on every prospective flatmate card.
+        </div>
+        <div class="p-3 rounded-xl bg-slate-50 border border-slate-200">
+          <strong class="text-indigo-700 font-bold">✓ Dual Search Capability:</strong> Seamlessly switch between independent PGs and active flatmate replacement.
+        </div>
+        <div class="p-3 rounded-xl bg-slate-50 border border-slate-200">
+          <strong class="text-indigo-700 font-bold">✓ Dispute-Free Rent Splitter:</strong> Mathematical fairness calculator for shared 2BHK/3BHK apartments.
+        </div>
+        <div class="p-3 rounded-xl bg-indigo-50 border border-indigo-200 text-indigo-950">
+          <strong class="text-indigo-800 font-bold">✓ 20% Milestone Status:</strong> Core navigation, OTP auth, manual location entry, and rent breakdown modals completed.
+        </div>
+      </div>
+      <div class="text-[11px] text-slate-400 text-right">Phase 1 / 20% Milestone Review</div>
+    </div>
+
+    <!-- SLIDE 12: 10. Conclusion & Bibliography -->
+    <div class="slide hidden p-8 sm:p-12 flex-1 flex flex-col justify-between bg-white">
+      <div>
+        <span class="text-xs font-bold text-indigo-600 uppercase tracking-wider">Section 10</span>
+        <h2 class="text-2xl sm:text-3xl font-extrabold text-slate-900 mt-1">10. Conclusion & Bibliography</h2>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 my-auto text-xs sm:text-sm">
+        <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-2">
+          <h3 class="font-bold text-slate-900 text-sm">🎯 Conclusion</h3>
+          <p class="text-slate-600">• Solves housing and roommate incompatibility for students and interns.</p>
+          <p class="text-slate-600">• Blends physical accommodation discovery with habit-based psychological matching.</p>
+          <p class="text-slate-600">• All expenses transparently itemized in Indian Rupees (₹) with zero brokerage.</p>
+          <p class="text-slate-500 text-[11px] pt-1"><strong>Future Scope:</strong> In-app chat, landlord KYC, and digital lease creation.</p>
+        </div>
+        <div class="p-4 rounded-2xl bg-slate-50 border border-slate-200 space-y-2">
+          <h3 class="font-bold text-indigo-950 text-sm">📚 Bibliography</h3>
+          <p class="text-slate-600 text-[11px]">[1] Ricci, F. et al. (2015). <em>Introduction to Recommender Systems Handbook</em>. Springer.</p>
+          <p class="text-slate-600 text-[11px]">[2] Resnick, P. & Varian, H. (1997). <em>Recommender Systems</em>. CACM 40(3).</p>
+          <p class="text-slate-600 text-[11px]">[3] FastAPI Framework Documentation (2024).</p>
+          <p class="text-slate-600 text-[11px]">[4] React & Modern Single Page Applications (2024).</p>
+        </div>
+      </div>
+      <div class="text-[11px] text-slate-400 text-right">Phase 1 / 20% Milestone Review</div>
+    </div>
+
+  </main>
+
+  <!-- Bottom Navigation Buttons -->
+  <footer class="w-full max-w-5xl flex items-center justify-between mt-3 px-2">
+    <button onclick="prevSlide()" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-white rounded-xl text-xs font-bold transition-all flex items-center gap-1.5">
+      ◀ Previous Slide
+    </button>
+    <div class="text-[11px] text-slate-500 font-medium">
+      Tip: Press <kbd class="px-1.5 py-0.5 rounded bg-slate-800 text-slate-300">←</kbd> and <kbd class="px-1.5 py-0.5 rounded bg-slate-800 text-slate-300">→</kbd> arrow keys to navigate
+    </div>
+    <button onclick="nextSlide()" class="px-5 py-2 bg-indigo-600 hover:bg-indigo-500 text-white rounded-xl text-xs font-bold transition-all shadow-md flex items-center gap-1.5">
+      Next Slide ▶
+    </button>
+  </footer>
+
+  <script>
+    let current = 0;
+    const slides = document.querySelectorAll('.slide');
+    const total = slides.length;
+
+    function showSlide(index) {
+      if (index < 0) index = 0;
+      if (index >= total) index = total - 1;
+      current = index;
+      slides.forEach((s, i) => {
+        if (i === current) {
+          s.classList.remove('hidden');
+        } else {
+          s.classList.add('hidden');
+        }
+      });
+      document.getElementById('slideNum').innerText = current + 1;
+    }
+
+    function nextSlide() {
+      if (current < total - 1) showSlide(current + 1);
+    }
+
+    function prevSlide() {
+      if (current > 0) showSlide(current - 1);
+    }
+
+    function toggleFullScreen() {
+      if (!document.fullscreenElement) {
+        document.documentElement.requestFullscreen().catch(() => {});
+      } else {
+        if (document.exitFullscreen) document.exitFullscreen();
+      }
+    }
+
+    window.addEventListener('keydown', (e) => {
+      if (e.key === 'ArrowRight' || e.key === ' ' || e.key === 'PageDown') {
+        nextSlide();
+      } else if (e.key === 'ArrowLeft' || e.key === 'PageUp') {
+        prevSlide();
+      }
+    });
+  </script>
+</body>
+</html>

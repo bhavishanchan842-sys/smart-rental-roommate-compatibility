@@ -274,20 +274,16 @@ export default function AuthFlow({ onAuthComplete }) {
 
               <div>
                 <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
-                  Target City
+                  Location / City (Enter Manually)
                 </label>
-                <select
+                <input
+                  type="text"
+                  required
+                  placeholder="Type city/area manually (e.g. Koramangala, Bangalore)..."
                   value={details.city}
                   onChange={(e) => setDetails({ ...details, city: e.target.value })}
-                  className="w-full text-xs p-2.5 rounded-xl border border-slate-200 bg-slate-50 focus:outline-none focus:ring-2 focus:ring-indigo-500"
-                >
-                  <option value="Bangalore">Bangalore</option>
-                  <option value="Mumbai">Mumbai</option>
-                  <option value="Delhi NCR">Delhi NCR</option>
-                  <option value="Hyderabad">Hyderabad</option>
-                  <option value="Pune">Pune</option>
-                  <option value="Chennai">Chennai</option>
-                </select>
+                  className="w-full text-xs p-2.5 rounded-xl border border-slate-200 bg-white font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-500"
+                />
               </div>
             </div>
 

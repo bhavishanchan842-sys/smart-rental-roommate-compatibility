@@ -48,78 +48,48 @@ export default function SearchSharedPGPage({ currentUser }) {
         </p>
       </div>
 
-      {/* Manual Location & Search Card */}
-      <div className="bg-white p-5 rounded-3xl border border-slate-200 shadow-sm space-y-4">
-        
-        {/* Manual Location Input Bar */}
-        <div className="p-4 rounded-2xl bg-violet-50/70 border border-violet-100 space-y-2">
+      {/* Manual Location Entry Card */}
+      <div className="bg-white p-5 rounded-3xl border border-slate-200 shadow-sm">
+        <div className="space-y-2.5">
           <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
-            <label className="text-xs font-bold text-violet-950 flex items-center gap-1.5">
+            <label className="text-xs font-bold text-slate-800 flex items-center gap-1.5">
               <MapPin className="w-4 h-4 text-violet-600" />
               <span>Enter Location Manually:</span>
             </label>
-            <button
-              type="button"
-              onClick={() => handleOpenGoogleMaps(manualLocation)}
-              className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-violet-700 hover:bg-violet-800 text-white text-xs font-bold shadow-sm transition-all"
-              title="Open entered location in Google Maps"
-            >
-              <Map className="w-3.5 h-3.5" />
-              <span>Open in Google Maps</span>
-              <ExternalLink className="w-3 h-3 ml-0.5 opacity-80" />
-            </button>
+            {manualLocation && (
+              <button
+                type="button"
+                onClick={() => handleOpenGoogleMaps(manualLocation)}
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-violet-700 hover:bg-violet-800 text-white text-xs font-bold shadow-2xs transition-all self-start sm:self-auto"
+                title="Open entered location in Google Maps"
+              >
+                <Map className="w-3.5 h-3.5" />
+                <span>Open in Google Maps</span>
+                <ExternalLink className="w-3 h-3 ml-0.5 opacity-80" />
+              </button>
+            )}
           </div>
 
           <div className="relative">
-            <MapPin className="w-4 h-4 text-violet-500 absolute left-3.5 top-1/2 -translate-y-1/2" />
+            <MapPin className="w-4 h-4 text-violet-600 absolute left-3.5 top-1/2 -translate-y-1/2" />
             <input
               type="text"
-              placeholder="Type area manually (e.g. Koramangala, HSR Layout, Indiranagar)..."
+              placeholder="Type any area or flatmate location manually (e.g. Koramangala, HSR Layout, Indiranagar)..."
               value={manualLocation}
               onChange={(e) => setManualLocation(e.target.value)}
-              className="w-full text-xs pl-10 pr-4 py-2.5 rounded-xl border border-violet-200 bg-white focus:outline-none focus:ring-2 focus:ring-violet-500 text-slate-900 font-medium placeholder:text-slate-400"
+              className="w-full text-xs font-bold pl-10 pr-20 py-3 rounded-2xl border-2 border-violet-200 bg-white focus:outline-none focus:ring-2 focus:ring-violet-500 text-slate-900 placeholder:text-slate-400 placeholder:font-normal shadow-2xs"
+              autoFocus
             />
-          </div>
-
-          {/* Quick Location Chips */}
-          <div className="flex flex-wrap items-center gap-1.5 pt-0.5">
-            <span className="text-[11px] font-semibold text-slate-500">Popular:</span>
-            {popularLocations.map((loc) => (
-              <button
-                key={loc}
-                type="button"
-                onClick={() => setManualLocation(loc)}
-                className={`text-[11px] px-2.5 py-0.5 rounded-lg border transition-all ${
-                  manualLocation === loc
-                    ? 'bg-violet-700 text-white border-violet-700 font-bold'
-                    : 'bg-white text-slate-600 border-slate-200 hover:border-violet-300 hover:text-violet-700'
-                }`}
-              >
-                {loc}
-              </button>
-            ))}
             {manualLocation && (
               <button
                 type="button"
                 onClick={() => setManualLocation('')}
-                className="text-[10px] text-slate-400 hover:text-rose-600 underline ml-1"
+                className="absolute right-3 top-1/2 -translate-y-1/2 text-xs font-bold text-slate-400 hover:text-rose-600 px-2 py-1 rounded-lg hover:bg-slate-100 transition-colors"
               >
                 Clear
               </button>
             )}
           </div>
-        </div>
-
-        {/* Text Filter */}
-        <div className="relative">
-          <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
-          <input
-            type="text"
-            placeholder="Filter by flatmate name, occupation, or room amenities..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            className="w-full text-xs pl-10 pr-4 py-2.5 rounded-2xl border border-slate-200 bg-slate-50 focus:outline-none focus:ring-2 focus:ring-violet-500 text-slate-800"
-          />
         </div>
       </div>
 

@@ -168,14 +168,8 @@
               </select>
             </div>
             <div>
-              <label class="font-bold text-slate-700 block mb-1">Target City</label>
-              <select id="inputCity" class="w-full p-2.5 rounded-xl border-2 border-slate-300 bg-white text-slate-900 font-bold focus:outline-none shadow-xs">
-                <option>Bangalore</option>
-                <option>Mumbai</option>
-                <option>Delhi NCR</option>
-                <option>Hyderabad</option>
-                <option>Pune</option>
-              </select>
+              <label class="font-bold text-slate-700 block mb-1">Target Location / City (Enter Manually)</label>
+              <input id="inputCity" type="text" placeholder="Type city or area manually (e.g. Koramangala, Bangalore)..." value="Koramangala, Bangalore" class="w-full p-2.5 rounded-xl border-2 border-slate-300 bg-white text-slate-900 font-bold focus:outline-none shadow-xs text-xs" />
             </div>
           </div>
 
@@ -257,6 +251,19 @@
           <span class="text-xs font-bold text-violet-600 uppercase tracking-wider">Flatmate Replacement</span>
           <h2 class="text-xl sm:text-2xl font-extrabold text-slate-900 mt-0.5">PG with Person Already Living There</h2>
           <p class="text-xs text-slate-500">Move into an active flat. Click any card to inspect the <strong>Total Rent Details</strong>, <strong>Share Details</strong>, and the <strong>Roommate Compatibility Quiz</strong>.</p>
+        </div>
+
+        <!-- Manual Location Bar for Tab 2 -->
+        <div class="bg-violet-50/80 p-4 rounded-2xl border border-violet-100 space-y-2 text-xs">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+            <span class="font-bold text-violet-950 flex items-center gap-1">📍 Enter Location Manually:</span>
+            <button onclick="openCustomSharedGoogleMaps()" class="px-3 py-1.5 rounded-xl bg-violet-700 hover:bg-violet-800 text-white font-bold text-xs shadow-2xs flex items-center gap-1 self-start sm:self-auto">
+              🗺️ Open in Google Maps ➔
+            </button>
+          </div>
+          <div class="flex gap-2">
+            <input id="manualSharedLocationInput" type="text" placeholder="Type area or flatmate location manually (e.g. Koramangala, HSR Layout, Indiranagar)..." class="w-full p-2.5 rounded-xl border border-violet-200 bg-white text-slate-800 text-xs font-bold" oninput="filterSharedByManualLocation()" />
+          </div>
         </div>
 
         <div id="sharedGrid" class="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -664,11 +671,14 @@
       }
     }
 
-    // 3. Render Cards
-    function renderRooms(filterType = 'All') {
-      const grid = document.getElementById('roomsGrid');
+    // 3. Render Cards & Manual Location Filters
     function openCustomGoogleMaps() {
       const loc = document.getElementById('manualLocationInput')?.value || 'Bangalore, Karnataka';
+      window.open('https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(loc), '_blank');
+    }
+
+    function openCustomSharedGoogleMaps() {
+      const loc = document.getElementById('manualSharedLocationInput')?.value || 'Bangalore, Karnataka';
       window.open('https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(loc), '_blank');
     }
 
@@ -682,12 +692,11 @@
 
     function filterByManualLocation() {
       const q = (document.getElementById('manualLocationInput')?.value || '').toLowerCase().trim();
-      if (!q) {
-        renderRooms('All');
-        return;
-      }
       const grid = document.getElementById('roomsGrid');
-      const filtered = ROOMS.filter(r => r.title.toLowerCase().includes(q) || r.address.toLowerCase().includes(q));
+      const filtered = q 
+        ? ROOMS.filter(r => r.title.toLowerCase().includes(q) || r.address.toLowerCase().includes(q))
+        : ROOMS;
+      
       grid.innerHTML = filtered.length ? filtered.map(r => `
         <div class="p-4 rounded-2xl border border-slate-200 bg-white hover:border-indigo-300 shadow-sm flex flex-col justify-between space-y-3">
           <div>
@@ -754,9 +763,14 @@
       renderRooms(type);
     }
 
-    function renderShared() {
+    function filterSharedByManualLocation() {
+      const q = (document.getElementById('manualSharedLocationInput')?.value || '').toLowerCase().trim();
       const grid = document.getElementById('sharedGrid');
-      grid.innerHTML = SHARED_PGS.map(spg => `
+      const filtered = q
+        ? SHARED_PGS.filter(spg => spg.title.toLowerCase().includes(q) || spg.address.toLowerCase().includes(q) || spg.resident.toLowerCase().includes(q) || spg.job.toLowerCase().includes(q))
+        : SHARED_PGS;
+
+      grid.innerHTML = filtered.length ? filtered.map(spg => `
         <div class="p-4 rounded-2xl border border-slate-200 bg-white hover:border-violet-300 shadow-sm flex flex-col justify-between space-y-3">
           <div>
             <div class="flex justify-between items-start">
@@ -791,7 +805,11 @@
             View Rent Share & Compatibility Quiz ➔
           </button>
         </div>
-      `).join('');
+      `).join('') : '<div class="col-span-2 text-center py-8 text-xs text-slate-400">No shared PGs matching this area. Try searching Koramangala, HSR Layout, or Indiranagar.</div>';
+    }
+
+    function renderShared() {
+      filterSharedByManualLocation();
     }
 
     // 4. Shared PG Modal

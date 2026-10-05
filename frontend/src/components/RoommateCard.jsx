@@ -84,7 +84,7 @@ export default function RoommateCard({ match, onOpenDetail, onConnect }) {
             </span>
 
             <span className="text-[11px] font-medium px-2 py-0.5 rounded-lg bg-emerald-50 text-emerald-700 border border-emerald-200">
-              ${lifestyle.budget_min}-${lifestyle.budget_max}/mo
+              ₹{lifestyle.budget_min} - ₹{lifestyle.budget_max}/mo
             </span>
           </div>
 

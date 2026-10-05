@@ -27,7 +27,7 @@ export default function PropertyCard({ property, onOpenDetail, onOpenSplitter })
             )}
           </div>
           <div className="absolute bottom-3 right-3 bg-white/95 backdrop-blur-sm px-3 py-1.5 rounded-xl shadow-md">
-            <span className="text-base font-extrabold text-indigo-700">${property.rent_monthly}</span>
+            <span className="text-base font-extrabold text-indigo-700">₹{property.rent_monthly}</span>
             <span className="text-[11px] text-slate-500 font-medium">/mo</span>
           </div>
         </div>
@@ -41,9 +41,20 @@ export default function PropertyCard({ property, onOpenDetail, onOpenSplitter })
             {property.title}
           </h3>
 
-          <div className="flex items-center gap-1.5 text-xs text-slate-500 mt-2">
-            <MapPin className="w-3.5 h-3.5 text-slate-400 shrink-0" />
-            <span className="truncate">{property.neighborhood}, {property.city}</span>
+          <div className="flex items-center justify-between gap-1.5 text-xs text-slate-500 mt-2">
+            <div className="flex items-center gap-1.5 truncate">
+              <MapPin className="w-3.5 h-3.5 text-slate-400 shrink-0" />
+              <span className="truncate">{property.neighborhood}, {property.city}</span>
+            </div>
+            <a
+              href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${property.title}, ${property.neighborhood}, ${property.city}`)}`}
+              target="_blank"
+              rel="noreferrer"
+              onClick={(e) => e.stopPropagation()}
+              className="text-[11px] font-semibold text-indigo-600 hover:text-indigo-800 bg-indigo-50 px-2 py-0.5 rounded-md hover:bg-indigo-100 transition-colors shrink-0 flex items-center gap-1"
+            >
+              📍 Maps
+            </a>
           </div>
 
           {/* Quick Specs */}

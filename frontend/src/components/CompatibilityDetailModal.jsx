@@ -188,8 +188,8 @@ export default function CompatibilityDetailModal({
 
               <div className="grid grid-cols-3 p-3">
                 <div className="font-medium text-slate-600">Monthly Budget</div>
-                <div>${currentLifestyle.budget_min} - ${currentLifestyle.budget_max}</div>
-                <div>${matchLifestyle.budget_min} - ${matchLifestyle.budget_max}</div>
+                <div>₹{currentLifestyle.budget_min} - ₹{currentLifestyle.budget_max}</div>
+                <div>₹{matchLifestyle.budget_min} - ₹{matchLifestyle.budget_max}</div>
               </div>
             </div>
           </div>

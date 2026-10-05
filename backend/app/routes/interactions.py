@@ -130,7 +130,7 @@ def calculate_fair_rent_split(payload: FairRentSplitRequest):
 
         explanation = (
             f"{room.size_sqft} sqft ({round((room.size_sqft / total_sqft) * 100, 1)}% of private space)"
-            f"{perks_str}. Common area share: ${round(common_share_per_room, 2)}."
+            f"{perks_str}. Common area share: ₹{round(common_share_per_room, 2)}."
         )
 
         room_results.append(RoomSplitResult(
@@ -156,5 +156,5 @@ def calculate_fair_rent_split(payload: FairRentSplitRequest):
         total_utilities=utilities,
         rooms=room_results,
         common_area_share_per_person=round(common_share_per_room, 2),
-        summary=f"Calculated fair split for {num_rooms} rooms across {int(total_sqft)} total private sqft with ${int(common_pool)} shared common amenities pool."
+        summary=f"Calculated fair split for {num_rooms} rooms across {int(total_sqft)} total private sqft with ₹{int(common_pool)} shared common amenities pool."
     )

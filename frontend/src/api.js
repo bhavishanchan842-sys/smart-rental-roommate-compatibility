@@ -288,7 +288,7 @@ export async function calculateFairRentSplit(payload) {
       total_monthly: totalMonthly,
       percentage_of_rent: pct,
       amenity_surcharge: Math.round(surcharges[i] * 100) / 100,
-      formula_explanation: `${room.size_sqft} sqft (${Math.round((room.size_sqft / totalSqft) * 100)}% private area)${perks.length ? ' with ' + perks.join(', ') : ''}. Equal common pool: $${Math.round(commonSharePerRoom)}.`
+      formula_explanation: `${room.size_sqft} sqft (${Math.round((room.size_sqft / totalSqft) * 100)}% private area)${perks.length ? ' with ' + perks.join(', ') : ''}. Equal common pool: ₹${Math.round(commonSharePerRoom)}.`
     };
   });
 

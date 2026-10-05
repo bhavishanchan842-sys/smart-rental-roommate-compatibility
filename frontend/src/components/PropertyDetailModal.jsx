@@ -64,11 +64,11 @@ export default function PropertyDetailModal({ property, onClose, onOpenSplitter 
           <div className="grid grid-cols-2 sm:grid-cols-4 gap-3 bg-indigo-50/50 p-4 rounded-2xl border border-indigo-100">
             <div>
               <p className="text-[10px] uppercase font-bold text-slate-400">Monthly Rent</p>
-              <p className="text-xl font-black text-indigo-700 mt-0.5">${property.rent_monthly}</p>
+              <p className="text-xl font-black text-indigo-700 mt-0.5">₹{property.rent_monthly}</p>
             </div>
             <div>
               <p className="text-[10px] uppercase font-bold text-slate-400">Security Deposit</p>
-              <p className="text-lg font-bold text-slate-800 mt-0.5">${property.deposit || 0}</p>
+              <p className="text-lg font-bold text-slate-800 mt-0.5">₹{property.deposit || 0}</p>
             </div>
             <div>
               <p className="text-[10px] uppercase font-bold text-slate-400">Utilities</p>
@@ -76,7 +76,7 @@ export default function PropertyDetailModal({ property, onClose, onOpenSplitter 
                 {property.utilities_included ? (
                   <><Zap className="w-3.5 h-3.5" /> Included</>
                 ) : (
-                  `~$${property.estimated_utilities}/mo`
+                  `~₹${property.estimated_utilities}/mo`
                 )}
               </p>
             </div>
@@ -88,9 +88,31 @@ export default function PropertyDetailModal({ property, onClose, onOpenSplitter 
 
           {/* Location & Details */}
           <div>
-            <div className="flex items-center gap-1.5 text-xs text-slate-600 font-medium mb-3">
-              <MapPin className="w-4 h-4 text-indigo-600" />
-              <span>{property.address}, {property.neighborhood}, {property.city}</span>
+            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs text-slate-600 font-medium mb-3">
+              <div className="flex items-center gap-1.5">
+                <MapPin className="w-4 h-4 text-indigo-600 shrink-0" />
+                <span>{property.address}, {property.neighborhood}, {property.city}</span>
+              </div>
+              <a
+                href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${property.title}, ${property.address || ''}, ${property.neighborhood}, ${property.city}`)}`}
+                target="_blank"
+                rel="noreferrer"
+                className="inline-flex items-center gap-1.5 text-xs font-bold text-indigo-700 bg-indigo-50 hover:bg-indigo-100 border border-indigo-200 px-3 py-1.5 rounded-xl transition-colors shrink-0"
+              >
+                <span>🗺️ Open in Google Maps</span>
+              </a>
+            </div>
+
+            {/* Embedded Google Maps View */}
+            <div className="rounded-2xl overflow-hidden border border-slate-200 mb-3 shadow-inner">
+              <iframe
+                title="Google Maps Location"
+                width="100%"
+                height="180"
+                style={{ border: 0 }}
+                loading="lazy"
+                src={`https://maps.google.com/maps?q=${encodeURIComponent(`${property.address || property.title}, ${property.neighborhood}, ${property.city}`)}&t=&z=14&ie=UTF8&iwloc=&output=embed`}
+              />
             </div>
 
             <div className="flex items-center gap-6 text-xs text-slate-600 py-3 px-4 bg-slate-50 rounded-xl">

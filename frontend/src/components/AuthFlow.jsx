@@ -292,14 +292,26 @@ export default function AuthFlow({ onAuthComplete }) {
             </div>
 
             <div>
-              <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
-                College or Workplace
-              </label>
+              <div className="flex justify-between items-center mb-1">
+                <label className="text-xs font-bold text-slate-700 uppercase tracking-wider">
+                  College, Workplace or Preferred Area
+                </label>
+                {details.college && (
+                  <a
+                    href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${details.college}, ${details.city}`)}`}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="text-[11px] font-semibold text-indigo-600 hover:text-indigo-800 bg-indigo-50 px-2 py-0.5 rounded-md flex items-center gap-0.5 transition-colors"
+                  >
+                    📍 Check on Google Maps
+                  </a>
+                )}
+              </div>
               <input
                 type="text"
                 value={details.college}
                 onChange={(e) => setDetails({ ...details, college: e.target.value })}
-                placeholder="e.g. Christ University or Infosys"
+                placeholder="e.g. Near Christ University, Koramangala"
                 className="w-full text-xs p-2.5 rounded-xl border border-slate-200 focus:outline-none focus:ring-2 focus:ring-indigo-500"
               />
             </div>

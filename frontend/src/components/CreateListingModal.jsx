@@ -115,7 +115,7 @@ export default function CreateListingModal({ isOpen, onClose, currentUser, onLis
           <div className="grid grid-cols-3 gap-4">
             <div>
               <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
-                Monthly Rent ($)
+                Monthly Rent (₹)
               </label>
               <input
                 type="number"
@@ -128,7 +128,7 @@ export default function CreateListingModal({ isOpen, onClose, currentUser, onLis
 
             <div>
               <label className="block text-xs font-bold text-slate-700 uppercase tracking-wider mb-1">
-                Deposit ($)
+                Deposit (₹)
               </label>
               <input
                 type="number"

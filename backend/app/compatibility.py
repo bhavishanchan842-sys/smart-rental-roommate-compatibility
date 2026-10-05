@@ -32,11 +32,11 @@ def calculate_budget_overlap(min1: float, max1: float, min2: float, max2: float)
         overlap_range = overlap_end - overlap_start
         avg_range = ((max1 - min1) + (max2 - min2)) / 2.0
         ratio = min(1.0, (overlap_range + 50) / (avg_range + 50))
-        return (0.85 + (0.15 * ratio), f"Overlapping budget range: ${int(overlap_start)} - ${int(overlap_end)}/mo")
+        return (0.85 + (0.15 * ratio), f"Overlapping budget range: ₹{int(overlap_start)} - ₹{int(overlap_end)}/mo")
     else:
         gap = overlap_start - overlap_end
         penalty = min(0.6, gap / 300.0)
-        return (max(0.3, 0.8 - penalty), f"Budget gap of ${int(gap)}/mo")
+        return (max(0.3, 0.8 - penalty), f"Budget gap of ₹{int(gap)}/mo")
 
 
 def calculate_compatibility(p1, p2) -> Dict[str, Any]:

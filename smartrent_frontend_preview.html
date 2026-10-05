@@ -212,6 +212,27 @@
           <p class="text-xs text-slate-500">Curated Boys, Girls, and Co-Living PGs with food and housekeeping included.</p>
         </div>
 
+        <!-- Manual Location & Google Maps Bar -->
+        <div class="bg-indigo-50/80 p-4 rounded-2xl border border-indigo-100 space-y-2 text-xs">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+            <span class="font-bold text-indigo-950 flex items-center gap-1">📍 Enter Location Manually:</span>
+            <button onclick="openCustomGoogleMaps()" class="px-3 py-1.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs shadow-2xs flex items-center gap-1 self-start sm:self-auto">
+              🗺️ Connect with Google Maps ➔
+            </button>
+          </div>
+          <div class="flex gap-2">
+            <input id="manualLocationInput" type="text" placeholder="Type college, area or landmark (e.g. Koramangala 4th block, Christ University, HSR)..." class="flex-1 p-2.5 rounded-xl border border-indigo-200 bg-white text-slate-800 text-xs font-medium" oninput="filterByManualLocation()" />
+          </div>
+          <div class="flex flex-wrap gap-1.5 pt-1 text-[11px]">
+            <span class="text-slate-500 font-medium">Quick Areas:</span>
+            <button onclick="setManualArea('Koramangala')" class="px-2 py-0.5 rounded bg-white border border-slate-200 text-slate-700 hover:bg-indigo-50">Koramangala</button>
+            <button onclick="setManualArea('HSR Layout')" class="px-2 py-0.5 rounded bg-white border border-slate-200 text-slate-700 hover:bg-indigo-50">HSR Layout</button>
+            <button onclick="setManualArea('Indiranagar')" class="px-2 py-0.5 rounded bg-white border border-slate-200 text-slate-700 hover:bg-indigo-50">Indiranagar</button>
+            <button onclick="setManualArea('Electronic City')" class="px-2 py-0.5 rounded bg-white border border-slate-200 text-slate-700 hover:bg-indigo-50">Electronic City</button>
+            <button onclick="setManualArea('')" class="px-2 py-0.5 rounded text-slate-400 hover:text-rose-600 underline">Reset</button>
+          </div>
+        </div>
+
         <!-- Filter Bar -->
         <div class="bg-slate-50 p-3.5 rounded-2xl border border-slate-200 flex flex-wrap items-center justify-between gap-3 text-xs">
           <div class="flex items-center gap-1.5">
@@ -220,9 +241,6 @@
             <button onclick="filterRooms('Boys PG')" class="px-2.5 py-1 rounded-lg bg-white border border-slate-300 text-slate-700 font-semibold shadow-2xs">Boys PG</button>
             <button onclick="filterRooms('Girls PG')" class="px-2.5 py-1 rounded-lg bg-white border border-slate-300 text-slate-700 font-semibold shadow-2xs">Girls PG</button>
             <button onclick="filterRooms('Co-Living')" class="px-2.5 py-1 rounded-lg bg-white border border-slate-300 text-slate-700 font-semibold shadow-2xs">Co-Living</button>
-          </div>
-          <div class="text-slate-600 text-[11px]">
-            📍 Areas: <strong>Koramangala, HSR Layout, Indiranagar, Electronic City</strong>
           </div>
         </div>
 
@@ -372,6 +390,9 @@
             <h4 id="modalPgTitle" class="font-bold text-slate-900 text-sm">Spacious 2BHK Room Share in Koramangala</h4>
             <p id="modalPgAddress" class="text-slate-500 text-[11px]">17th Cross, Near Sony World Signal, Koramangala</p>
           </div>
+
+          <!-- Embedded Map Container -->
+          <div id="modalMapContainer" class="p-3 bg-slate-50 rounded-xl border border-slate-200 space-y-1"></div>
 
           <!-- Highlight Cards -->
           <div class="grid grid-cols-2 gap-3">
@@ -649,6 +670,58 @@
     // 3. Render Cards
     function renderRooms(filterType = 'All') {
       const grid = document.getElementById('roomsGrid');
+    function openCustomGoogleMaps() {
+      const loc = document.getElementById('manualLocationInput')?.value || 'Bangalore, Karnataka';
+      window.open('https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent(loc), '_blank');
+    }
+
+    function setManualArea(area) {
+      const input = document.getElementById('manualLocationInput');
+      if (input) {
+        input.value = area;
+        filterByManualLocation();
+      }
+    }
+
+    function filterByManualLocation() {
+      const q = (document.getElementById('manualLocationInput')?.value || '').toLowerCase().trim();
+      if (!q) {
+        renderRooms('All');
+        return;
+      }
+      const grid = document.getElementById('roomsGrid');
+      const filtered = ROOMS.filter(r => r.title.toLowerCase().includes(q) || r.address.toLowerCase().includes(q));
+      grid.innerHTML = filtered.length ? filtered.map(r => `
+        <div class="p-4 rounded-2xl border border-slate-200 bg-white hover:border-indigo-300 shadow-sm flex flex-col justify-between space-y-3">
+          <div>
+            <div class="flex justify-between items-start">
+              <span class="text-[10px] font-bold px-2 py-0.5 rounded bg-indigo-50 text-indigo-700 border border-indigo-200">${r.type}</span>
+              <span class="text-base font-black text-indigo-700">${r.rent}<span class="text-[10px] text-slate-500 font-normal">/mo</span></span>
+            </div>
+            <h3 class="font-bold text-slate-900 text-sm mt-1.5">${r.title}</h3>
+            <div class="flex items-center justify-between mt-1 text-xs text-slate-500">
+              <span>📍 ${r.address}</span>
+              <a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(r.title + ' ' + r.address)}" target="_blank" class="px-2 py-0.5 rounded bg-indigo-50 text-indigo-700 font-bold text-[11px] hover:bg-indigo-100">
+                🗺️ Maps
+              </a>
+            </div>
+            <div class="mt-2 bg-emerald-50 text-emerald-800 p-2 rounded-lg text-[11px] font-medium border border-emerald-100">
+              🍲 ${r.food}
+            </div>
+            <p class="text-[11px] text-slate-600 mt-2"><strong>Sharing:</strong> ${r.sharing}</p>
+          </div>
+          <div class="pt-2 border-t border-slate-100 flex justify-between items-center text-xs">
+            <span class="text-slate-500 text-[11px]">Deposit: ${r.deposit}</span>
+            <button onclick="alert('PG Warden Contact: ' + '${r.contact}')" class="px-3.5 py-1.5 rounded-lg bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs shadow-2xs">
+              Call Warden
+            </button>
+          </div>
+        </div>
+      `).join('') : '<div class="col-span-2 text-center py-8 text-xs text-slate-400">No PGs found in this manual area. Try searching Koramangala, HSR Layout, or Indiranagar.</div>';
+    }
+
+    function renderRooms(filterType = 'All') {
+      const grid = document.getElementById('roomsGrid');
       const filtered = filterType === 'All' ? ROOMS : ROOMS.filter(r => r.type.includes(filterType));
       
       grid.innerHTML = filtered.map(r => `
@@ -659,7 +732,12 @@
               <span class="text-base font-black text-indigo-700">${r.rent}<span class="text-[10px] text-slate-500 font-normal">/mo</span></span>
             </div>
             <h3 class="font-bold text-slate-900 text-sm mt-1.5">${r.title}</h3>
-            <p class="text-xs text-slate-500 mt-0.5">📍 ${r.address}</p>
+            <div class="flex items-center justify-between mt-1 text-xs text-slate-500">
+              <span>📍 ${r.address}</span>
+              <a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(r.title + ' ' + r.address)}" target="_blank" class="px-2 py-0.5 rounded bg-indigo-50 text-indigo-700 font-bold text-[11px] hover:bg-indigo-100">
+                🗺️ Maps
+              </a>
+            </div>
             <div class="mt-2 bg-emerald-50 text-emerald-800 p-2 rounded-lg text-[11px] font-medium border border-emerald-100">
               🍲 ${r.food}
             </div>
@@ -689,7 +767,12 @@
               <span class="text-xs font-black px-2 py-0.5 rounded-full bg-emerald-50 text-emerald-700 border border-emerald-200">✨ ${spg.match}% Match</span>
             </div>
             <h3 class="font-bold text-slate-900 text-sm mt-1.5">${spg.title}</h3>
-            <p class="text-xs text-slate-500 mt-0.5">📍 ${spg.address}</p>
+            <div class="flex items-center justify-between mt-1 text-xs text-slate-500">
+              <span>📍 ${spg.address}</span>
+              <a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(spg.title + ' ' + spg.address)}" target="_blank" class="px-2 py-0.5 rounded bg-violet-50 text-violet-700 font-bold text-[11px] hover:bg-violet-100">
+                🗺️ Maps
+              </a>
+            </div>
 
             <div class="mt-3 p-2.5 bg-slate-50 rounded-xl border border-slate-200 flex items-center gap-2.5">
               <div class="w-9 h-9 rounded-xl bg-violet-200 text-violet-800 flex items-center justify-center font-bold text-sm">
@@ -733,6 +816,23 @@
       document.getElementById('modalCostMaid').innerText = spg.breakdown.maid;
       document.getElementById('modalCostWifi').innerText = spg.breakdown.wifi;
       document.getElementById('modalCostTotal').innerText = spg.breakdown.total;
+
+      const mapContainer = document.getElementById('modalMapContainer');
+      if (mapContainer) {
+        mapContainer.innerHTML = `
+          <div class="flex items-center justify-between mb-1">
+            <span class="font-bold text-slate-700 text-[11px]">📍 Google Maps Location:</span>
+            <a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(spg.title + ' ' + spg.address)}" target="_blank" class="text-indigo-600 font-bold hover:underline text-[11px]">
+              Open in Google Maps App ➔
+            </a>
+          </div>
+          <iframe title="Map" width="100%" height="150" style="border:0" class="rounded-xl border border-slate-200" src="https://maps.google.com/maps?q=${encodeURIComponent(spg.address + ', Bangalore')}&t=&z=15&ie=UTF8&iwloc=&output=embed"></iframe>
+        `;
+      }
+
+      switchModalTab('rent');
+      document.getElementById('sharedModal').classList.remove('hidden');
+    }
 
       switchModalTab('rent');
       document.getElementById('sharedModal').classList.remove('hidden');

@@ -1,24 +1,45 @@
 import React, { useState } from 'react';
-import { Building, Search, SlidersHorizontal, MapPin, Check, Phone, Utensils, Zap, Shield, Sparkles } from 'lucide-react';
+import { Building, Search, SlidersHorizontal, MapPin, Check, Phone, Utensils, Zap, Shield, Sparkles, Navigation, ExternalLink, Map } from 'lucide-react';
 import { MOCK_ROOMS_AND_PGS } from '../mockData';
 
 export default function SearchRoomsPage({ onSelectPG }) {
   const [search, setSearch] = useState('');
+  const [manualLocation, setManualLocation] = useState('');
+  const [showMapPreview, setShowMapPreview] = useState(false);
   const [typeFilter, setTypeFilter] = useState('All');
   const [maxRent, setMaxRent] = useState(15000);
   const [foodOnly, setFoodOnly] = useState(false);
   const [selectedPG, setSelectedPG] = useState(null);
   const [contacted, setContacted] = useState(false);
 
+  const effectiveLocation = manualLocation || search;
+
+  const handleOpenGoogleMaps = (locationQuery) => {
+    const query = locationQuery || effectiveLocation || 'Bangalore';
+    const url = `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(query)}`;
+    window.open(url, '_blank', 'noopener,noreferrer');
+  };
+
+  const handleGetDirections = (destinationAddress) => {
+    const originParam = manualLocation ? `&origin=${encodeURIComponent(manualLocation)}` : '';
+    const url = `https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(destinationAddress)}${originParam}`;
+    window.open(url, '_blank', 'noopener,noreferrer');
+  };
+
+  const popularLocations = ['Koramangala', 'HSR Layout', 'Indiranagar', 'Electronic City', 'Whitefield', 'Christ University'];
+
   const filtered = MOCK_ROOMS_AND_PGS.filter((pg) => {
     if (typeFilter !== 'All' && !pg.type.includes(typeFilter)) return false;
     if (pg.total_rent > maxRent) return false;
     if (foodOnly && !pg.food_included) return false;
-    if (search) {
-      const q = search.toLowerCase();
-      const match = pg.title.toLowerCase().includes(q) ||
-                    pg.neighborhood.toLowerCase().includes(q) ||
-                    pg.address.toLowerCase().includes(q);
+    
+    // Filter by search or manual location
+    const term = (manualLocation || search).trim().toLowerCase();
+    if (term) {
+      const match = pg.title.toLowerCase().includes(term) ||
+                    pg.neighborhood.toLowerCase().includes(term) ||
+                    pg.address.toLowerCase().includes(term) ||
+                    pg.city.toLowerCase().includes(term);
       if (!match) return false;
     }
     return true;
@@ -37,22 +58,115 @@ export default function SearchRoomsPage({ onSelectPG }) {
           Find Rooms & Student PGs
         </h1>
         <p className="text-xs text-slate-500 mt-0.5">
-          Browse verified Boys, Girls, and Co-Living PGs with food, WiFi, and daily housekeeping included.
+          Browse verified Boys, Girls, and Co-Living PGs in Indian Rupees (₹) with manual location entry and Google Maps connectivity.
         </p>
       </div>
 
-      {/* Filter and Search Bar */}
+      {/* Filter and Manual Location Card */}
       <div className="bg-white p-5 rounded-3xl border border-slate-200 shadow-sm space-y-4">
         
-        {/* Search */}
+        {/* 1. MANUAL LOCATION ENTRY & GOOGLE MAPS CONNECTIVITY */}
+        <div className="p-4 rounded-2xl bg-indigo-50/70 border border-indigo-100 space-y-2.5">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2">
+            <label className="text-xs font-bold text-indigo-950 flex items-center gap-1.5">
+              <MapPin className="w-4 h-4 text-indigo-600" />
+              <span>Enter Manual Location / College / Area:</span>
+            </label>
+            <div className="flex items-center gap-2">
+              <button
+                type="button"
+                onClick={() => handleOpenGoogleMaps(manualLocation)}
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold shadow-sm transition-all"
+                title="Connect and view on Google Maps"
+              >
+                <Map className="w-3.5 h-3.5" />
+                <span>Connect with Google Maps</span>
+                <ExternalLink className="w-3 h-3 ml-0.5 opacity-80" />
+              </button>
+              <button
+                type="button"
+                onClick={() => setShowMapPreview(!showMapPreview)}
+                className="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-xl bg-white border border-indigo-200 hover:bg-indigo-50 text-indigo-700 text-xs font-semibold transition-all"
+              >
+                <span>{showMapPreview ? 'Hide Map' : 'Preview Map'}</span>
+              </button>
+            </div>
+          </div>
+
+          <div className="relative">
+            <MapPin className="w-4 h-4 text-indigo-500 absolute left-3.5 top-1/2 -translate-y-1/2" />
+            <input
+              type="text"
+              placeholder="Type any area manually (e.g. Koramangala 4th Block, HSR Sector 2, Near Christ University, Bangalore)..."
+              value={manualLocation}
+              onChange={(e) => setManualLocation(e.target.value)}
+              className="w-full text-xs pl-10 pr-4 py-2.5 rounded-xl border border-indigo-200 bg-white focus:outline-none focus:ring-2 focus:ring-indigo-500 text-slate-900 font-medium placeholder:text-slate-400"
+            />
+          </div>
+
+          {/* Quick Location Chips */}
+          <div className="flex flex-wrap items-center gap-1.5 pt-1">
+            <span className="text-[11px] font-semibold text-slate-500">Quick Areas:</span>
+            {popularLocations.map((loc) => (
+              <button
+                key={loc}
+                type="button"
+                onClick={() => setManualLocation(loc)}
+                className={`text-[11px] px-2.5 py-0.5 rounded-lg border transition-all ${
+                  manualLocation === loc
+                    ? 'bg-indigo-600 text-white border-indigo-600 font-bold'
+                    : 'bg-white text-slate-600 border-slate-200 hover:border-indigo-300 hover:text-indigo-600'
+                }`}
+              >
+                📍 {loc}
+              </button>
+            ))}
+            {manualLocation && (
+              <button
+                type="button"
+                onClick={() => setManualLocation('')}
+                className="text-[10px] text-slate-400 hover:text-rose-600 underline ml-1"
+              >
+                Clear
+              </button>
+            )}
+          </div>
+
+          {/* Embedded Google Map Preview for Manual Location */}
+          {showMapPreview && (
+            <div className="mt-3 rounded-2xl overflow-hidden border border-indigo-200 shadow-sm animate-in fade-in duration-200">
+              <div className="bg-indigo-100/70 px-3 py-1.5 text-[11px] font-bold text-indigo-900 flex justify-between items-center">
+                <span>🗺️ Live Google Maps Preview: {manualLocation || 'Bangalore'}</span>
+                <a
+                  href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(manualLocation || 'Bangalore')}`}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="text-indigo-700 hover:underline flex items-center gap-0.5"
+                >
+                  Open in New Tab <ExternalLink className="w-2.5 h-2.5" />
+                </a>
+              </div>
+              <iframe
+                title="Google Map Manual Location"
+                width="100%"
+                height="190"
+                style={{ border: 0 }}
+                loading="lazy"
+                src={`https://maps.google.com/maps?q=${encodeURIComponent(manualLocation || 'Bangalore, Karnataka')}&t=&z=14&ie=UTF8&iwloc=&output=embed`}
+              />
+            </div>
+          )}
+        </div>
+
+        {/* Text Filter / Search */}
         <div className="relative">
           <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
           <input
             type="text"
-            placeholder="Search by college, area (e.g. Koramangala, HSR Layout, Indiranagar)..."
+            placeholder="Filter by keywords (e.g. AC, Single room, Balcony, Stanza Living)..."
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            className="w-full text-xs pl-10 pr-4 py-3 rounded-2xl border border-slate-200 bg-slate-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-slate-800"
+            className="w-full text-xs pl-10 pr-4 py-2.5 rounded-2xl border border-slate-200 bg-slate-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 text-slate-800"
           />
         </div>
 
@@ -150,10 +264,24 @@ export default function SearchRoomsPage({ onSelectPG }) {
                   {pg.title}
                 </h3>
 
-                <p className="text-xs text-slate-500 flex items-center gap-1">
-                  <MapPin className="w-3.5 h-3.5 text-slate-400 shrink-0" />
-                  <span>{pg.address} ({pg.neighborhood})</span>
-                </p>
+                <div className="flex items-center justify-between gap-1 text-xs text-slate-500">
+                  <p className="flex items-center gap-1 truncate">
+                    <MapPin className="w-3.5 h-3.5 text-slate-400 shrink-0" />
+                    <span className="truncate">{pg.address} ({pg.neighborhood})</span>
+                  </p>
+                  <button
+                    type="button"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      handleOpenGoogleMaps(`${pg.title}, ${pg.address}, ${pg.neighborhood}, ${pg.city}`);
+                    }}
+                    className="text-[11px] font-bold text-indigo-600 hover:text-indigo-800 bg-indigo-50 hover:bg-indigo-100 px-2 py-0.5 rounded-lg shrink-0 flex items-center gap-0.5 transition-colors"
+                    title="View on Google Maps"
+                  >
+                    <span>📍 Maps</span>
+                    <ExternalLink className="w-2.5 h-2.5" />
+                  </button>
+                </div>
 
                 {/* Occupancy Options */}
                 <div className="bg-slate-50 p-2.5 rounded-xl border border-slate-100 space-y-1">
@@ -216,7 +344,43 @@ export default function SearchRoomsPage({ onSelectPG }) {
               <div>
                 <span className="text-xs font-bold text-indigo-600 uppercase tracking-wider">{selectedPG.type}</span>
                 <h2 className="text-xl font-bold text-slate-900">{selectedPG.title}</h2>
-                <p className="text-xs text-slate-500 mt-1">{selectedPG.address}, {selectedPG.neighborhood}, {selectedPG.city}</p>
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mt-1">
+                  <p className="text-xs text-slate-500 flex items-center gap-1">
+                    <MapPin className="w-3.5 h-3.5 text-indigo-600 shrink-0" />
+                    <span>{selectedPG.address}, {selectedPG.neighborhood}, {selectedPG.city}</span>
+                  </p>
+                  <div className="flex items-center gap-2">
+                    <button
+                      type="button"
+                      onClick={() => handleOpenGoogleMaps(`${selectedPG.title}, ${selectedPG.address}, ${selectedPG.neighborhood}, ${selectedPG.city}`)}
+                      className="inline-flex items-center gap-1 text-xs font-bold text-indigo-700 bg-indigo-50 hover:bg-indigo-100 border border-indigo-200 px-2.5 py-1 rounded-xl transition-colors"
+                    >
+                      <Map className="w-3 h-3 text-indigo-600" />
+                      <span>Open Maps</span>
+                      <ExternalLink className="w-2.5 h-2.5 ml-0.5" />
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => handleGetDirections(`${selectedPG.address}, ${selectedPG.neighborhood}, ${selectedPG.city}`)}
+                      className="inline-flex items-center gap-1 text-xs font-bold text-emerald-700 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 px-2.5 py-1 rounded-xl transition-colors"
+                    >
+                      <Navigation className="w-3 h-3 text-emerald-600" />
+                      <span>Directions</span>
+                    </button>
+                  </div>
+                </div>
+              </div>
+
+              {/* Embedded Interactive Google Map */}
+              <div className="rounded-2xl overflow-hidden border border-slate-200 shadow-inner">
+                <iframe
+                  title="PG Google Maps Location"
+                  width="100%"
+                  height="160"
+                  style={{ border: 0 }}
+                  loading="lazy"
+                  src={`https://maps.google.com/maps?q=${encodeURIComponent(`${selectedPG.address}, ${selectedPG.neighborhood}, ${selectedPG.city}`)}&t=&z=15&ie=UTF8&iwloc=&output=embed`}
+                />
               </div>
 
               {/* Food Info */}

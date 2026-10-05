@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { X, Sparkles, CheckCircle2, User, Phone, Check, ArrowRight, Sun, Moon, Sparkle, AlertTriangle } from 'lucide-react';
+import { X, Sparkles, CheckCircle2, User, Phone, Check, ArrowRight, Sun, Moon, Sparkle, AlertTriangle, MapPin, Map, Navigation, ExternalLink } from 'lucide-react';
 import { calculateResidentCompatibility } from '../mockData';
 import confetti from 'canvas-confetti';
 
@@ -109,7 +109,45 @@ export default function SharedPGDetailModal({ pg, currentUser, onClose }) {
               <div>
                 <span className="text-[11px] font-bold text-indigo-600 uppercase tracking-wider">{pg.property_type}</span>
                 <h2 className="text-lg font-bold text-slate-900">{pg.title}</h2>
-                <p className="text-xs text-slate-500">{pg.address}, {pg.neighborhood}, {pg.city}</p>
+                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mt-1">
+                  <p className="text-xs text-slate-500 flex items-center gap-1">
+                    <MapPin className="w-3.5 h-3.5 text-indigo-600 shrink-0" />
+                    <span>{pg.address}, {pg.neighborhood}, {pg.city}</span>
+                  </p>
+                  <div className="flex items-center gap-2">
+                    <a
+                      href={`https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${pg.title}, ${pg.address}, ${pg.neighborhood}, ${pg.city}`)}`}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="inline-flex items-center gap-1 text-xs font-bold text-indigo-700 bg-indigo-50 hover:bg-indigo-100 border border-indigo-200 px-2.5 py-1 rounded-xl transition-colors"
+                    >
+                      <Map className="w-3 h-3 text-indigo-600" />
+                      <span>Open Maps</span>
+                      <ExternalLink className="w-2.5 h-2.5 ml-0.5" />
+                    </a>
+                    <a
+                      href={`https://www.google.com/maps/dir/?api=1&destination=${encodeURIComponent(`${pg.address}, ${pg.neighborhood}, ${pg.city}`)}`}
+                      target="_blank"
+                      rel="noreferrer"
+                      className="inline-flex items-center gap-1 text-xs font-bold text-emerald-700 bg-emerald-50 hover:bg-emerald-100 border border-emerald-200 px-2.5 py-1 rounded-xl transition-colors"
+                    >
+                      <Navigation className="w-3 h-3 text-emerald-600" />
+                      <span>Directions</span>
+                    </a>
+                  </div>
+                </div>
+              </div>
+
+              {/* Embedded Google Map */}
+              <div className="rounded-2xl overflow-hidden border border-slate-200 shadow-inner">
+                <iframe
+                  title="Shared PG Google Map"
+                  width="100%"
+                  height="160"
+                  style={{ border: 0 }}
+                  loading="lazy"
+                  src={`https://maps.google.com/maps?q=${encodeURIComponent(`${pg.address}, ${pg.neighborhood}, ${pg.city}`)}&t=&z=15&ie=UTF8&iwloc=&output=embed`}
+                />
               </div>
 
               {/* Big High-Level Numbers */}

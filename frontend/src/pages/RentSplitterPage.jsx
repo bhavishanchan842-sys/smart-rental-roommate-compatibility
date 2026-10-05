@@ -3,8 +3,8 @@ import { Calculator, Plus, Trash2, CheckCircle2, Shield, Info, Copy, Check, Spar
 import { calculateFairRentSplit } from '../api';
 
 export default function RentSplitterPage({ prefillProperty }) {
-  const [totalRent, setTotalRent] = useState(2400);
-  const [totalUtilities, setTotalUtilities] = useState(180);
+  const [totalRent, setTotalRent] = useState(24000);
+  const [totalUtilities, setTotalUtilities] = useState(2500);
   const [commonAreaWeight, setCommonAreaWeight] = useState(25);
   const [copied, setCopied] = useState(false);
 
@@ -111,8 +111,8 @@ export default function RentSplitterPage({ prefillProperty }) {
 
   const handleCopySummary = () => {
     if (!splitResult) return;
-    const text = `🏠 Fair Rent Split Breakdown\nTotal Rent: $${splitResult.total_rent} (Utilities: $${splitResult.total_utilities})\n\n` +
-      splitResult.rooms.map(r => `• ${r.occupant_name} (${r.room_name}): $${r.calculated_rent}/mo rent + $${r.utility_share} utils = $${r.total_monthly} total`).join('\n') +
+    const text = `🏠 Fair Rent Split Breakdown\nTotal Rent: ₹${splitResult.total_rent} (Utilities: ₹${splitResult.total_utilities})\n\n` +
+      splitResult.rooms.map(r => `• ${r.occupant_name} (${r.room_name}): ₹${r.calculated_rent}/mo rent + ₹${r.utility_share} utils = ₹${r.total_monthly} total`).join('\n') +
       `\n\nGenerated with SmartRent Fair Calculator`;
     navigator.clipboard.writeText(text);
     setCopied(true);
@@ -149,7 +149,7 @@ export default function RentSplitterPage({ prefillProperty }) {
 
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
               <div>
-                <label className="block text-xs font-bold text-slate-700 mb-1.5">Total Monthly Rent ($)</label>
+                <label className="block text-xs font-bold text-slate-700 mb-1.5">Total Monthly Rent (₹)</label>
                 <input
                   type="number"
                   value={totalRent}
@@ -159,7 +159,7 @@ export default function RentSplitterPage({ prefillProperty }) {
               </div>
 
               <div>
-                <label className="block text-xs font-bold text-slate-700 mb-1.5">Total Utilities ($/mo)</label>
+                <label className="block text-xs font-bold text-slate-700 mb-1.5">Total Utilities (₹/mo)</label>
                 <input
                   type="number"
                   value={totalUtilities}
@@ -330,14 +330,14 @@ export default function RentSplitterPage({ prefillProperty }) {
                       </div>
 
                       <div className="text-right">
-                        <p className="text-xl font-black text-slate-900">${r.total_monthly}</p>
+                        <p className="text-xl font-black text-slate-900">₹{r.total_monthly}</p>
                         <p className="text-[10px] text-slate-500">{r.percentage_of_rent}% of rent</p>
                       </div>
                     </div>
 
                     <div className="pt-2 border-t border-slate-100 flex items-center justify-between text-[11px] text-slate-600">
-                      <span>Base Rent: <strong className="text-slate-900">${r.calculated_rent}</strong></span>
-                      <span>Utilities: <strong className="text-slate-900">${r.utility_share}</strong></span>
+                      <span>Base Rent: <strong className="text-slate-900">₹{r.calculated_rent}</strong></span>
+                      <span>Utilities: <strong className="text-slate-900">₹{r.utility_share}</strong></span>
                     </div>
 
                     <p className="text-[10px] text-slate-500 italic leading-snug">
@@ -352,7 +352,7 @@ export default function RentSplitterPage({ prefillProperty }) {
                     Zero-Sum Verified
                   </p>
                   <p className="text-emerald-700 text-[10px]">
-                    Sum of individual rents strictly equals ${splitResult.total_rent}. Common area share per occupant: ${splitResult.common_area_share_per_person}.
+                    Sum of individual rents strictly equals ₹{splitResult.total_rent}. Common area share per occupant: ₹{splitResult.common_area_share_per_person}.
                   </p>
                 </div>
               </div>

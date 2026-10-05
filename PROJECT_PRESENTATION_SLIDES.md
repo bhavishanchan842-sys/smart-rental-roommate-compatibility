@@ -1,136 +1,136 @@
 # Smart Rental & Roommate Compatibility Platform
 ## Project Presentation Slides (Phase 1 / 20% Evaluation)
 
-> **Theme**: Professional Indigo & Slate Modern Design  
-> **PowerPoint File**: `SmartRent_Presentation.pptx`  
-> **Key Guideline**: Easy to read, crisp bullet points, not lengthy.
+> **Key Rule**: Simple, natural, and easy to explain by reading just once.  
+> **PowerPoint File**: `SmartRent_Presentation.pptx` (Saved on Desktop & in Project Folder).
 
 ---
 
 ### Slide 1: Title Slide
 - **Title**: SMART RENTAL & ROOMMATE COMPATIBILITY PLATFORM
-- **Subtitle**: Intelligent PG Discovery, Habit-Based Matching & Transparent Shared Living
-- **Degree / Phase**: Mini-Project Phase 1 (20% Milestone)
+- **Subtitle**: Find the Right PG and the Right Roommate Without Brokers
+- **Evaluation**: Mini-Project Phase 1 (20% Evaluation)
 - **Domain**: Web Technologies & Applied Machine Learning
-- **Currency & Geo**: Indian Rupees (₹) • Manual Location Entry with Google Maps
 
 ---
 
 ### Slide 2: 1. Abstract
-- **Core Problem**: Urban students & interns struggle to find affordable accommodation and face frequent conflicts with incompatible roommates.
-- **Proposed Solution**: A dual-mode web platform combining independent PG discovery with a habit-based roommate recommendation engine.
-- **Dual Discovery**:
-  1. *Search Independent Rooms & PGs* (Boys, Girls, Co-Living).
-  2. *Search Shared PGs with Person Already Living There* (with mutual compatibility %).
-- **Fair Utility Splitter**: Mathematical algorithm dividing rent based on bedroom square footage and attached washrooms.
-- **Value**: Transparent pricing in Indian Rupees (₹), zero brokerage, and dispute-free co-living.
+- **What is this project?**: A simple website that helps students and interns find verified PGs and compatible flatmates in one place.
+- **Roommate Matching**: Matches people based on everyday habits like sleep schedule, cleanliness, and food preferences so roommates don't fight.
+- **Two Ways to Search**: Users can search independent Boys/Girls PGs OR search a shared room where someone is already living.
+- **Fair Rent Calculator**: Automatically calculates fair rent for each person based on bedroom size and attached bathroom.
+- **Main Benefit**: 100% transparent costs in Rupees (₹) and zero broker commissions.
+
+> 🗣️ **One-Line Explanation for Mam**:  
+> *"Good morning Ma'am. Our project helps students easily find verified PGs and compatible flatmates, so they don't fight over daily habits or pay heavy broker charges."*
 
 ---
 
 ### Slide 3: 2. Introduction: Background & Motivation
 
 #### 📌 Background
-- Rapid migration of students and employees to metropolitan hubs (Bangalore, Pune, Hyderabad, NCR).
-- High rental inflation forces people to share 2BHK/3BHK flats to split living costs.
-- Traditional property portals treat tenants merely as real-estate buyers, completely ignoring who they will live with.
+- Students and young workers move to big cities like Bangalore for college and jobs.
+- Individual apartments are too expensive, so sharing a 2BHK/3BHK flat or PG is necessary.
+- Existing property portals only list buildings, but tell you nothing about the people you will live with.
 
 #### 🎯 Motivation
-- Clashes in daily habits (sleep routines, cleanliness standards, food preferences) cause immense stress and mid-lease dropouts.
-- Students waste high brokerage fees on unverified properties with surprise hidden charges.
-- Motivation to build a single-window solution that evaluates **habit compatibility before moving in**.
+- Living with an incompatible roommate (late sleepers vs early risers) causes daily arguments and stress.
+- Brokers take heavy non-refundable fees from students without verifying room conditions.
+- We wanted to build an easy tool where students can verify their roommate's habits before moving in.
+
+> 🗣️ **One-Line Explanation for Mam**:  
+> *"Students have to share flats to save money, but living with the wrong person ruins their peace of mind. We solve this by testing habit compatibility upfront."*
 
 ---
 
 ### Slide 4: 2. Introduction: Scope
-- **Target Audience**: College students, corporate interns, and early-career working professionals.
-- **Manual Area Discovery**: Users type any neighborhood, landmark, or college name manually, with 1-click external Google Maps route connectivity.
-- **Scientific Matchmaking**: Evaluates 4 core dimensions: Sleep Schedule, Cleanliness, Study Routine, and Dietary Habits.
-- **Transparent Expense Breakdown**: Itemizes Room Rent, Cook, Maid, and WiFi separately in INR (₹).
-- **Out of Scope for Phase 1**: Commercial banking payment gateway and legal lease disputes.
+- **Target Users**: College students, interns, and young working professionals looking for shared housing.
+- **Manual Location Search**: Users can type any neighborhood, landmark, or college name manually to find rooms nearby.
+- **Google Maps Connectivity**: A 1-click button to open the location directly in Google Maps for easy navigation.
+- **Transparent Expenses**: Shows exact breakdown of Room Rent, Food, Maid, and WiFi separately in Rupees (₹).
+- **What is Out of Scope?**: Online rent payments and legal dispute handling are kept out of Phase 1 to keep the system simple and focused.
 
 ---
 
 ### Slide 5: 3. Literature Survey (L S)
-- **Traditional Portals** *(MagicBricks, 99acres)*: Large catalog of properties, but zero roommate matching; treats shared living as commercial real estate.
-- **Social Media Groups** *(Facebook, WhatsApp)*: Free community postings, but unstructured data, heavy spam, zero verification, no privacy.
-- **Basic Flatmate Apps** *(Flatmate.in, Roomster)*: Filter by city and budget, but superficial matching (only age/budget); no lifestyle algorithms or itemized utility breakdown.
-- **Academic Research** *(Ricci et al., RecSys)*: Proves vector similarity algorithms work, but rarely implemented in a practical, user-friendly student rental workflow.
+- **1. Property Websites (MagicBricks, 99acres)**: Great for buying flats, but completely ignore roommate matching and student budgets.
+- **2. Social Media (Facebook & WhatsApp Groups)**: Free to post, but full of spam, fake brokers, unverified listings, and no privacy.
+- **3. Basic Flatmate Apps (Flatmate.in)**: Only filters by age and city; does not match daily living habits or provide utility splitters.
+- **4. Our Advantage**: Combines verified PG listings + lifestyle compatibility quiz + transparent rent breakdown in one simple platform.
 
 ---
 
 ### Slide 6: 4. Research Gap
-- **Gap 1: Absence of Lifestyle Compatibility**: Existing apps match purely on budget and city, ignoring sleep cycles, study habits, and cleanliness.
-- **Gap 2: No Resident-In-Place Discovery**: Existing platforms only list vacant flats, lacking an option to move in with someone who is **already living there**.
-- **Gap 3: Hidden Expense Surprises**: Listed rents frequently omit maintenance, electricity, maid, and cook fees.
-- **Gap 4: Arbitrary Rent Splitting**: Roommates dispute over rent when one gets a master bedroom with an attached bathroom while the other gets a smaller room.
-- **Our Contribution**: We bridge all 4 gaps with vector matching, resident-replacement listings, transparent cost cards, and an automated fair rent calculator.
+- **Gap 1: No Lifestyle Matching**: Existing websites match only by budget and city. They ignore sleep routines, cleanliness, and diet.
+- **Gap 2: No Resident-In-Place Search**: Most apps only show empty rooms. They don't help you join someone who is ALREADY living there.
+- **Gap 3: Hidden Costs**: Advertised rent often excludes food, maid, electricity, and maintenance fees, surprising students later.
+- **Gap 4: Unfair Rent Splitting**: When one roommate gets a bigger room with an attached bath, there is no tool to calculate fair rent shares.
 
 ---
 
 ### Slide 7: 5. Problem Statement
-> *"To design and develop a web-based rental discovery and roommate compatibility platform that matches tenants based on multi-dimensional lifestyle habits, enables manual area discovery, and provides transparent, mathematically fair rent and utility cost splitting in Indian Rupees (₹)."*
+> *"Students and young professionals struggle to find affordable PGs, often end up living with incompatible roommates due to a lack of habit verification, and face unexpected hidden costs and high broker fees."*
 
-#### Key Challenges Addressed:
-1. Eliminating high broker commission fees for students.
-2. Preventing roommate conflicts through psychological and habit alignment.
-3. Guaranteeing 100% upfront pricing transparency before signing a lease.
+#### How Our Project Solves It:
+1. Provides habit-based roommate compatibility scoring before moving in.
+2. Allows manual location search with direct Google Maps route viewing.
+3. Displays 100% itemized rent breakdown and fair rent splitting in Rupees (₹).
 
 ---
 
 ### Slide 8: 6. Objectives
-1. **Frictionless Onboarding**: Implement phone-based authentication with quick 4-digit OTP verification.
-2. **Multi-Vector Compatibility Engine**: Calculate mutual match percentage using normalized cosine vector similarity across lifestyle habits.
-3. **Dual Accommodation Discovery**:
-   - Module A: Independent Rooms & Student PGs.
-   - Module B: Shared PGs with existing flatmates.
-4. **Manual Location & Maps Connectivity**: Enable manual text entry for any area with instant 1-click Google Maps integration.
-5. **Fair Utility Splitter**: Automate mathematically fair rent distribution based on room dimensions and attached bathroom amenities.
+1. **Easy Login**: Fast mobile number login with a simple 4-digit OTP.
+2. **Habit Compatibility Match**: Compare two roommates on sleep, cleanliness, and diet to show a clear Match % score.
+3. **Dual Search Mode**: Search independent PGs OR search shared rooms with an existing flatmate.
+4. **Manual Location Search**: Let users type any area or college manually and connect directly with Google Maps.
+5. **Fair Rent Splitter**: Automatically split 2BHK/3BHK rent fairly based on room size and attached bathrooms.
 
 ---
 
-### Slide 9: 7. Methodology
-- **Step 1: User Profile & Survey**: User enters personal info and rates habits on a 1–5 scale (Sleep, Cleanliness, Study, Diet).
-- **Step 2: Vector Representation**: Numerical vector representation of habits: V = [x1, x2, x3, x4].
-- **Step 3: Cosine Similarity Matching**: Compute alignment score: Similarity(A, B) = (A · B) / (||A|| * ||B||), converted to a 0–100% match badge.
-- **Step 4: Manual Location & Dual Search**: Search by typed neighborhood and review verified PGs or resident profiles.
-- **Step 5: Rent & Utility Breakdown**: Display itemized expenses and apply room-dimension formula for fair cost-sharing.
+### Slide 9: 7. Methodology (How it works in 5 simple steps)
+- **Step 1: Quick Onboarding**: User enters phone number, verifies OTP, and enters their name, college, and budget.
+- **Step 2: Habit Preferences**: User rates simple daily habits (Sleep time, Cleanliness level, Diet) on a 1–5 scale.
+- **Step 3: Compatibility Matching**: The system compares habit scores and displays a clear match score (e.g. 92% Match).
+- **Step 4: Manual Location Search**: User types their preferred locality; the website filters matching PGs and opens Google Maps.
+- **Step 5: Rent Details & Splitter**: User sees full cost breakdown (Rent, Food, Maid, WiFi) and can use the Fair Rent Splitter.
 
 ---
 
 ### Slide 10: 8. System Requirements
-#### Software Requirements:
-- **Frontend**: React 18, Tailwind CSS, Lucide Icons, Vite
-- **Backend API**: Python 3.11+, FastAPI (REST Architecture)
-- **Database**: SQLite / PostgreSQL with SQLAlchemy ORM
-- **Algorithms**: NumPy, SciPy (Cosine Vector Similarity)
-- **External Tools**: Google Maps URL Scheme, Git & GitHub
 
-#### Hardware Requirements:
+#### 💻 Software Requirements
+- **Frontend**: React 18 & Tailwind CSS (Clean, responsive website)
+- **Backend**: Python 3.11 & FastAPI (Fast server)
+- **Database**: SQLite / PostgreSQL (Stores user profiles and PG data)
+- **External Tool**: Google Maps URL Scheme for directions
+
+#### ⚙️ Hardware Requirements
 - **Processor**: Intel Core i3 / AMD Ryzen 3 or higher
 - **RAM**: 4 GB minimum (8 GB recommended)
-- **Storage**: 10 GB available disk space
-- **Supported Devices**: Responsive across Laptops, Desktops, Tablets, and Smartphones
+- **Storage**: 10 GB free hard disk space
+- **Devices**: Runs smoothly on any Laptop, PC, Tablet, or Smartphone
 
 ---
 
 ### Slide 11: 9. Proposed Outcome
-- **Functional Web Application**: Intuitive, responsive web app featuring high-contrast clean design (all prices in ₹).
-- **Intelligent Match Indicator**: Instant compatibility score displayed on every flatmate profile.
-- **Dual Exploration**: Seamlessly toggle between independent PGs and flatmate replacement opportunities.
-- **Zero-Dispute Utility Splitter**: Fair rent distribution tool resolving flatmate disagreements over master bedrooms.
-- **Phase 1 Status (20% Milestone Achieved)**: Complete frontend architecture, navigation, mock dataset, OTP onboarding, manual location search, and Google Maps linking.
+- **Working Web Application**: A responsive, modern website where students can browse PGs and shared flats in ₹.
+- **Compatibility Match Badge**: Shows a clear match score (e.g. 92% Match) on prospective flatmates.
+- **Zero Broker Fees**: Students connect directly with verified PG wardens and flatmates, saving money.
+- **Fair Rent Calculator**: Solves rent disputes by mathematically calculating rent shares for unequal rooms.
+- **Current Status (20% Milestone)**: Frontend pages, demo OTP, manual location search, and rent breakdown modals are completed and working.
 
 ---
 
 ### Slide 12: 10. Conclusion & Bibliography
-#### 🎯 Conclusion:
-- Successfully conceptualized and prototyped a smart, student-focused rental and flatmate matching system.
-- Combines housing discovery with psychological compatibility to ensure peaceful, long-term co-living.
-- Eliminates broker fees and provides transparent pricing in Indian Rupees (₹).
-- **Next Steps (Phase 2)**: Real-time chat, owner KYC verification, and dynamic database persistence.
 
-#### 📚 Bibliography:
-1. **Ricci, F., Rokach, L., & Shapira, B.** (2015). *Introduction to Recommender Systems Handbook*. Springer.
-2. **Resnick, P., & Varian, H. R.** (1997). *Recommender Systems*. Communications of the ACM, 40(3), 56–58.
-3. **FastAPI Documentation** (2024). *High-Performance Asynchronous Python Web APIs*.
-4. **React Documentation** (2024). *Component-Based User Interfaces & Modern Web Standards*.
+#### 🎯 Conclusion
+- Smart Rental & Roommate Compatibility solves a real everyday problem for college students.
+- Helps students find safe rooms and peaceful roommates while eliminating broker commissions.
+- Guarantees 100% transparent pricing in Indian Rupees (₹).
+- **Future Enhancements**: In-app chat, landlord verification, and digital rental agreements.
+
+#### 📚 Bibliography
+1. **Recommender Systems Handbook** – Principles of matching and similarity.
+2. **Resnick & Varian** – Introduction to Recommender Systems.
+3. **FastAPI Documentation** – Modern, fast web APIs for Python.
+4. **React Documentation** – Building user interfaces.

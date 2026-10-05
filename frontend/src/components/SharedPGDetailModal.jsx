@@ -138,18 +138,6 @@ export default function SharedPGDetailModal({ pg, currentUser, onClose }) {
                 </div>
               </div>
 
-              {/* Embedded Google Map */}
-              <div className="rounded-2xl overflow-hidden border border-slate-200 shadow-inner">
-                <iframe
-                  title="Shared PG Google Map"
-                  width="100%"
-                  height="160"
-                  style={{ border: 0 }}
-                  loading="lazy"
-                  src={`https://maps.google.com/maps?q=${encodeURIComponent(`${pg.address}, ${pg.neighborhood}, ${pg.city}`)}&t=&z=15&ie=UTF8&iwloc=&output=embed`}
-                />
-              </div>
-
               {/* Big High-Level Numbers */}
               <div className="grid grid-cols-2 gap-4 bg-gradient-to-br from-indigo-50 to-violet-50 p-4 rounded-2xl border border-indigo-100">
                 <div className="bg-white p-3.5 rounded-xl border border-indigo-100 shadow-2xs">

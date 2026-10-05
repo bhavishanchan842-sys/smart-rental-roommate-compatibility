@@ -391,9 +391,6 @@
             <p id="modalPgAddress" class="text-slate-500 text-[11px]">17th Cross, Near Sony World Signal, Koramangala</p>
           </div>
 
-          <!-- Embedded Map Container -->
-          <div id="modalMapContainer" class="p-3 bg-slate-50 rounded-xl border border-slate-200 space-y-1"></div>
-
           <!-- Highlight Cards -->
           <div class="grid grid-cols-2 gap-3">
             <div class="p-3 bg-slate-50 rounded-xl border border-slate-200">
@@ -816,23 +813,6 @@
       document.getElementById('modalCostMaid').innerText = spg.breakdown.maid;
       document.getElementById('modalCostWifi').innerText = spg.breakdown.wifi;
       document.getElementById('modalCostTotal').innerText = spg.breakdown.total;
-
-      const mapContainer = document.getElementById('modalMapContainer');
-      if (mapContainer) {
-        mapContainer.innerHTML = `
-          <div class="flex items-center justify-between mb-1">
-            <span class="font-bold text-slate-700 text-[11px]">📍 Google Maps Location:</span>
-            <a href="https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(spg.title + ' ' + spg.address)}" target="_blank" class="text-indigo-600 font-bold hover:underline text-[11px]">
-              Open in Google Maps App ➔
-            </a>
-          </div>
-          <iframe title="Map" width="100%" height="150" style="border:0" class="rounded-xl border border-slate-200" src="https://maps.google.com/maps?q=${encodeURIComponent(spg.address + ', Bangalore')}&t=&z=15&ie=UTF8&iwloc=&output=embed"></iframe>
-        `;
-      }
-
-      switchModalTab('rent');
-      document.getElementById('sharedModal').classList.remove('hidden');
-    }
 
       switchModalTab('rent');
       document.getElementById('sharedModal').classList.remove('hidden');

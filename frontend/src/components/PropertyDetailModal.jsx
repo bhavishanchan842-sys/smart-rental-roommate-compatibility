@@ -103,18 +103,6 @@ export default function PropertyDetailModal({ property, onClose, onOpenSplitter 
               </a>
             </div>
 
-            {/* Embedded Google Maps View */}
-            <div className="rounded-2xl overflow-hidden border border-slate-200 mb-3 shadow-inner">
-              <iframe
-                title="Google Maps Location"
-                width="100%"
-                height="180"
-                style={{ border: 0 }}
-                loading="lazy"
-                src={`https://maps.google.com/maps?q=${encodeURIComponent(`${property.address || property.title}, ${property.neighborhood}, ${property.city}`)}&t=&z=14&ie=UTF8&iwloc=&output=embed`}
-              />
-            </div>
-
             <div className="flex items-center gap-6 text-xs text-slate-600 py-3 px-4 bg-slate-50 rounded-xl">
               <div className="flex items-center gap-1.5">
                 <BedDouble className="w-4 h-4 text-slate-500" />
